@@ -1,0 +1,203 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.kam-logo {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  animation: fadeInLeft 1.2s ease-out;
+}
+
+.kam-logo img {
+  width: 180px; /* Aumentado el tamaño */
+  height: auto;
+}
+
+.login-container {
+  position: relative;
+  width: 300px;
+  margin: 150px auto 0; /* más espacio para que la imagen flote */
+}
+
+.logo-container {
+  position: absolute;
+  top: -50px; /* sube la imagen sobre el form */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.logo-container img {
+  width: 100px;
+  height: auto;
+  animation: bounceIn 1.5s ease-out;
+}
+
+form {
+  padding: 3em 2em;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 1s ease-out;
+}
+
+.group {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+input {
+  font-size: 15px;
+  padding: 25px 10px 10px 6px;
+  background: #fafafa;
+  color: #020202;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #757575;
+}
+
+input:focus {
+  outline: none;
+}
+
+label {
+  color: #999;
+  font-size: 16px;
+  position: absolute;
+  left: 6px;
+  top: 10px;
+  transition: all 0.3s ease;
+}
+
+input:focus ~ label,
+input.used ~ label {
+  top: -14px;
+  font-size: 12px;
+  color: #2378b6;
+}
+
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.bar:before,
+.bar:after {
+  content: "";
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  position: absolute;
+  background: #4a89dc;
+  transition: all 0.3s ease;
+}
+
+.bar:before {
+  left: 50%;
+}
+
+.bar:after {
+  right: 50%;
+}
+
+input:focus ~ .bar:before,
+input:focus ~ .bar:after {
+  width: 50%;
+}
+
+.highlight {
+  position: absolute;
+  width: 100px;
+  top: 50%;
+  left: 50px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+input:focus ~ .highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+
+@keyframes inputHighlighter {
+  from {
+    background: #1d68c9;
+  }
+  to {
+    width: 5px;
+    background: transparent;
+  }
+}
+
+.button {
+  padding: 10px 20px;
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2378b6;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.button:hover {
+  background-color: #41a7f5;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

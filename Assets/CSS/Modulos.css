@@ -1,0 +1,87 @@
+        body {
+            background-image: url("FONDO3.jpg");
+            background-size: 110%;
+            margin: auto;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: top center;
+            font-family: sans-serif;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #FFFFFFFF;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+            align-items: left;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #2378b2;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #007BFF;
+        }
+
+        .contenedor-imagenes {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px; /* Ajustado para mejor visualización */
+            margin: 20px auto; /* Centrado y con margen */
+            flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+        }
+
+        .imagen-con-texto {
+            text-align: center;
+            margin: 20px; /* Reducido el margen para mejor espaciado */
+            width: 300px; /* Ancho fijo para las imágenes y textos */
+        }
+
+        .imagen-con-texto img {
+            max-width: 100%;
+            height: 200px; /* Altura fija para las imágenes */
+            object-fit: contain; /* Asegura que la imagen se ajuste dentro del contenedor */
+        }
+
+        .imagen-con-texto h2 {
+            margin-top: 10px;
+            color: #2378B2;
+            font-size: 25px;
+        }
+
+        .imagen-con-texto p {
+            margin-top: 5px;
+            color: #666;
+            text-align: justify; /* Justifica el texto */
+            padding: 0 10px; /* Añade padding para mejor espaciado */
+        }
+
+        .title {
+            font-family: Arial, sans-serif;
+            font-size: 60px;
+            color: #2378b2;
+            text-align: center;
+            padding: 20px 0; /* Añade padding para mejor espaciado */
+        }

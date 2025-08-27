@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "libs/FDxSDKPro.jar",
+        "libs/spark-core-2.9.4.jar",
+        "libs/slf4j-simple-1.7.36.jar"
+    ]
+}

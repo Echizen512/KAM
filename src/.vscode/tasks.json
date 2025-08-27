@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar Huella.java",
+            "type": "shell",
+            "command": "javac -cp \"libs/FDxSDKPro.jar\" src/Huella.java",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Ejecutar Huella.jar",
+            "type": "shell",
+            "command": "java -jar Huella.jar",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        }
+    ]
+}

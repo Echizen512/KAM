@@ -1,0 +1,110 @@
+        body {
+            background-image: url("FONDO3.jpg");
+            background-size: cover; 
+            margin: 0; 
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-position: center; 
+            font-family: sans-serif;
+            display: flex; 
+            flex-direction: column;
+            min-height: 100vh; 
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #FFFFFFFF;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #2378b2;
+            font-weight: bold;
+        }
+
+        nav ul li a:hover {
+            color: #007BFF;
+        }
+
+        .contenedor-modulos {
+            display: flex;
+            justify-content: center; /* Centramos los módulos */
+            flex-wrap: wrap;
+            padding: 20px; /* Añadimos padding para separar del borde */
+        }
+
+        .modulo {
+            width: 300px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            margin: 20px;
+            padding: 15px;
+            text-align: center;
+            box-sizing: border-box; /* Incluimos padding y border en el ancho */
+        }
+
+        .miniatura {
+            width: 80%;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .ver-mas {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2378B2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .ver-mas:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2378B2;
+            margin-top: 40px;
+            width: 100%; /* Asegura que h1 ocupe todo el ancho */
+        }
+
+        .titulo {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2378B2;
+            margin-top: 25px;
+            width: 100%; /* Asegura que titulo ocupe todo el ancho */
+        }
+
+        /* Ajustes para centrar el contenido verticalmente */
+        main {
+            flex-grow: 1; /* Permite que el contenido principal se expanda */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el contenido horizontalmente */
+            justify-content: flex-start; /* Alinea el contenido al inicio verticalmente */
+        }

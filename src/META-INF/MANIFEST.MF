@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Main-Class: Huella
+Class-Path: ../libs/FDxSDKPro.jar ../libs/spark-core-2.9.4.jar ../libs/slf4j-simple-1.7.36.jar
