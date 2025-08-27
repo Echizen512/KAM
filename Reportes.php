@@ -211,6 +211,6 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
 
   <!-- Scripts -->
   <script src="Assets/JavaScript/Reportes.js"></script>
-  <script src="Assets/JavaScript/CanvasTabla.js"></script>
+  <script src="Assets/JavaScript/CanvasPrincipal.js"></script>
 </body>
 </html>

@@ -1,162 +1,156 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Generar Horario PDF</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="./Assets/CSS/Personal.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>KAM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="./Assets/CSS/Personal.css">
   <style>
     body {
-  background-color: #f8f9fa;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-}
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-.form-wrapper {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 700px;
-  z-index: 10;
-}
+    .form-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      max-width: 700px;
+      z-index: 10;
+    }
 
-.custom-card {
-  background: linear-gradient(to bottom right, #007bff, #0056b3);
-  color: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  padding: 40px;
-}
+    .custom-card {
+      background: linear-gradient(to bottom right, #007bff, #0056b3);
+      color: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+    }
 
-.custom-card h5 {
-  font-weight: 600;
-  margin-bottom: 25px;
-  text-align: center;
-  font-size: 1.5rem;
-}
+    .custom-card h5 {
+      font-weight: 600;
+      margin-bottom: 25px;
+      text-align: center;
+      font-size: 1.5rem;
+    }
 
-.form-label {
-  font-weight: 500;
-  margin-bottom: 8px;
-}
+    .form-label {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
 
-.form-control {
-  border-radius: 8px;
-  border: none;
-  padding: 12px 14px;
-  font-size: 1rem;
-}
+    .form-control {
+      border-radius: 8px;
+      border: none;
+      padding: 12px 14px;
+      font-size: 1rem;
+    }
 
-.btn-custom {
-  background-color: #ffffff;
-  color: #007bff;
-  font-weight: bold;
-  border-radius: 8px;
-  padding: 12px;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-}
+    .btn-custom {
+      background-color: #ffffff;
+      color: #007bff;
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 12px;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
 
-.btn-custom:hover {
-  background-color: #e0e0e0;
-  color: #0056b3;
-}
+    .btn-custom:hover {
+      background-color: #e0e0e0;
+      color: #0056b3;
+    }
 
-.icon-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1rem;
-}
+    .icon-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
 
+    #animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
 
-      #animated-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
+    .z-1 {
+      z-index: 1;
+    }
 
-.z-1 {
-  z-index: 1;
-}
+    .container-fluid {
+      position: relative;
+      z-index: 2;
+      background-color: #f8f9fa;
+      backdrop-filter: none;
+    }
 
-.container-fluid {
-  position: relative;
-  z-index: 2;
-  background-color: #f8f9fa; 
-  backdrop-filter: none; 
-}
+    .floating-button {
+      background-color: #2378b2;
+      opacity: 0.6;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      position: fixed;
+      bottom: 35px;
+      right: 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s ease;
+    }
 
-.floating-button {
-  background-color: #2378b2;
-  opacity: 0.6;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  position: fixed;
-  bottom: 35px;
-  right: 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: opacity 0.3s ease;
-}
+    .floating-button:hover {
+      opacity: 0.85;
+    }
 
-.floating-button:hover {
-  opacity: 0.85;
-}
+    .floating-button .hover-message {
+      display: none;
+      position: absolute;
+      bottom: 75px;
+      right: 0;
+      background-color: #2378b2;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
 
-.floating-button .hover-message {
-  display: none;
-  position: absolute;
-  bottom: 75px;
-  right: 0;
-  background-color: #2378b2;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.floating-button:hover .hover-message {
-  display: block;
-}
+    .floating-button:hover .hover-message {
+      display: block;
+    }
   </style>
+</head>
 
 <body>
 
 <canvas id="animated-bg"></canvas>
-<div class="container-fluid py-3 border-bottom">
-    <div class="d-flex align-items-center justify-content-between flex-wrap">
-      <div class="d-flex align-items-center gap-2">
-        <img src="Assets/Images/KAM.png" alt="Logo" width="160" height="40">
-      </div>
 
-    <div class="text-end">
-      <button type="button" class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal" data-bs-target="#myModal">
-        <i class="fas fa-plus"></i>
-      </button>
+<div class="container-fluid py-3 border-bottom">
+  <div class="d-flex align-items-center justify-content-between flex-wrap">
+    <div class="d-flex align-items-center gap-2">
+      <img src="Assets/Images/KAM.png" alt="Logo" width="160" height="40">
     </div>
   </div>
 </div>
@@ -167,7 +161,7 @@
 
     <div class="mb-3">
       <label class="form-label icon-label"><i class="fas fa-id-card"></i> Cédula del docente:</label>
-      <input type="text" name="cedula" class="form-control" placeholder="Ej. V12345678" required />
+      <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Ej. V12345678" required oninput="validarCedula()" />
     </div>
 
     <div class="d-grid mt-4">
@@ -178,22 +172,35 @@
   </form>
 </div>
 
+<a href="Inicio.php">
+  <div class="floating-button">
+    <i class="fas fa-house fa-xl text-white"></i>
+    <div class="hover-message">Inicio</div>
+  </div>
+</a>
 
-  <a href="Inicio.php">
-    <div class="floating-button">
-      <i class="fas fa-house fa-xl text-white"></i>
-      <div class="hover-message">Inicio</div>
-    </div>
-  </a>
-
-<script src="Assets/JavaScript/CanvasTabla.js"></script>
-
+<script src="Assets/JavaScript/CanvasPrincipal.js"></script>
 
 <script>
-function toggleCampos() {
-  const tipo = document.getElementById("tipoBusqueda").value;
-  document.getElementById("campoProfesor").style.display = tipo === "profesor" ? "block" : "none";
-  document.getElementById("campoSeccion").style.display = tipo === "seccion" ? "block" : "none";
+function validarCedula() {
+  const cedulaInput = document.getElementById("cedula");
+  let cedula = cedulaInput.value.trim();
+
+  // Corrige el formato automáticamente
+  if (!cedula.startsWith("V-")) {
+    cedula = "V-" + cedula.replace(/\D/g, "");
+    cedulaInput.value = cedula;
+  }
+
+  // Validación estricta opcional
+  if (!/^V-\d{7,8}$/.test(cedula)) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Formato inválido',
+      text: 'La cédula debe tener el formato V-12345678',
+    });
+    cedulaInput.focus();
+  }
 }
 </script>
 

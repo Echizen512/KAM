@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>KAM</title>
   <link rel="stylesheet" href="Assets/CSS/Index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 <body>
 
@@ -21,12 +23,13 @@
     </nav>
   </header>
 
-  <div class="main-content">
-    <a href="huella.php">
-      <img src="Assets/images/huella1.png" alt="huella">
-    </a>
-    <div class="texto">Registra tu asistencia</div>
-  </div>
+<div class="main-content">
+  <a href="huella.php">
+    <i class="fas fa-user-check fa-6x"></i>
+  </a>
+  <div class="texto">¡Registrar Asistencia!</div>
+</div>
+
 
     <script src="Assets/JavaScript/Canvas.js"></script>
 

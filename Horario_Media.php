@@ -368,7 +368,9 @@ $datos = $pdo->query($sql)->fetchAll();
         <div class="modal-body">
 
           <input type="text" id="cedulaInput" class="form-control mb-2" placeholder="Ingrese cédula" />
-          <button class="btn btn-primary mb-2" type="button" onclick="verificarCedula()">Verificar</button>
+          <div class="button-group text-center mb-2">
+            <button class="btn btn-primary mb-2" type="button" onclick="verificarCedula()">Verificar</button>
+          </div>
           <div id="mensaje" class="mb-2"></div>
 
           <div id="formularioHorario" style="display:none;">

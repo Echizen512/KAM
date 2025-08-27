@@ -72,22 +72,6 @@ $correo = $_SESSION['correo'];
     <img src="Assets/Images/KAM.png" width="220" height="40" alt="#">
   </div>
 
-  <div class="container">
-    <div class="logos">
-      <div class="hover-container2">
-        <a href="#" id="calendarButton">
-          <i class="fas fa-calendar-alt"></i>
-          <div class="hover-message2">Calendario</div>
-        </a>
-      </div>
-      <div class="hover-container3">
-        <a href="#" id="userProfileButton">
-          <i class="fas fa-user"></i>
-          <div class="hover-message3">Perfil</div>
-        </a>
-      </div>
-    </div>
-  </div>
 
   <br>
   <div id="userProfileModal" class="modal">

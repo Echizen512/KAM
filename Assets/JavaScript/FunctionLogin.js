@@ -14,7 +14,7 @@ function validarCedula() {
                 .then((response) => response.text())
                 .then((data) => {
                     if (data === "existe") {
-                        mostrarSelectorTipoAsistencia(cedula);
+                        mostrarModalAsistencia(cedula); // directo al modal de entrada/salida
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -43,38 +43,12 @@ function validarCedula() {
     }
 }
 
-    document.getElementById("cedula").addEventListener("input", function (e) {
-        let value = e.target.value.replace(/[^0-9]/g, ""); 
-        e.target.value = `V-${value}`;
-    });
+document.getElementById("cedula").addEventListener("input", function (e) {
+    let value = e.target.value.replace(/[^0-9]/g, "");
+    e.target.value = `V-${value}`;
+});
 
-function mostrarSelectorTipoAsistencia(cedula) {
-    Swal.fire({
-        title: "Seleccione el Tipo de Asistencia",
-        html: `
-        <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
-            <!-- Icono Manual -->
-            <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <a href="#" style="cursor: pointer; text-decoration: none;" onclick="mostrarModalAsistencia('manual', '${cedula}')" title="Asistencia Manual">
-                    <i class="fas fa-user-edit" style="font-size: 50px; color: #007bff;"></i>
-                </a>
-                <p style="margin: 5px 0; font-size: 18px; font-weight: bold;">Manual</p>
-            </div>
-            <!-- Icono Huella -->
-            <div style="text-align: center; display: flex; flex-direction: column; align-items: center;">
-                <a href="#" style="cursor: pointer; text-decoration: none;" onclick="mostrarModalAsistencia('huella', '${cedula}')" title="Huella Dactilar">
-                    <i class="fas fa-fingerprint" style="font-size: 50px; color: #007bff;"></i>
-                </a>
-                <p style="margin: 5px 0; font-size: 18px; font-weight: bold;">Huella</p>
-            </div>
-        </div>
-        `,
-        showCloseButton: true,
-        showConfirmButton: false,
-    });
-}
-
-function mostrarModalAsistencia(tipo, cedula) {
+function mostrarModalAsistencia(cedula) {
     Swal.fire({
         title: "Marque su Asistencia",
         html: `
@@ -98,21 +72,14 @@ function mostrarModalAsistencia(tipo, cedula) {
     });
 
     document.getElementById("flechaEntrada").onclick = () => {
-        if (tipo === "manual") {
-            mostrarModalHoraEntrada(cedula);
-        } else {
-            registrarEntradaConHuella("entrada", cedula);
-        }
+        mostrarModalHoraEntrada(cedula);
     };
 
     document.getElementById("flechaSalida").onclick = () => {
-        if (tipo === "manual") {
-            mostrarModalHoraSalida(cedula);
-        } else {
-            registrarSalidaConHuella("salida", cedula);
-        }
+        mostrarModalHoraSalida(cedula);
     };
 }
+
 
 function registrarEntradaConHuella(cedula) {
     const horaActual = new Date().toLocaleTimeString("en-US", { hour12: false });
