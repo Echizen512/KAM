@@ -14,16 +14,6 @@
 </head>
 
   <style>
-    #animated-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-}
-
 .z-1 {
   z-index: 1;
 }
@@ -35,16 +25,32 @@
   backdrop-filter: none; 
 }
 
-    .login-wrapper {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#animated-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.login-wrapper {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
 
     .login-container {
       margin-bottom: 1rem;
@@ -111,61 +117,61 @@
   </style>
 
 <body>
-
   <canvas id="animated-bg"></canvas>
 
-  <div class="login-container bg-white">
-      <div class="logo-container">
-      <img src="edupal.png" width="160" height="80" alt="" border="0"/>
+  <div class="login-wrapper">
+    <div class="login-container bg-white">
+      <div class="logo-container text-center mb-3">
+        <img src="./Assets/Images/edupal.png" width="160" height="80" alt="" border="0"/>
+      </div>
+
+      <form id="formulario" class="p-4 rounded shadow-sm">
+        <h2 class="mb-4 mt-4 text-primary text-center">Actualizar Información</h2>
+
+        <div class="mb-3">
+          <select id="opcion" name="opcion" class="form-select" required>
+            <option value="seleccione">Seleccione</option>
+            <option value="usuario">Usuario</option>
+            <option value="contrasena">Contraseña</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <input type="email" name="correo" id="correo" class="form-control" placeholder="Correo electrónico" required>
+        </div>
+
+        <div id="campo_usuario" style="display: none;">
+          <div class="mb-3">
+            <input type="text" name="nuevo_usuario" id="nuevo_usuario" class="form-control" placeholder="Nuevo usuario">
+          </div>
+          <div class="mb-3">
+            <input type="text" name="token_usuario" id="token_usuario" class="form-control" placeholder="introduzca el token recibido">
+          </div>
+        </div>
+
+        <div id="campo_contrasena" style="display: none;">
+          <div class="mb-3">
+            <input type="password" name="nueva_contrasena" id="nueva_contrasena" class="form-control" placeholder="Nueva contraseña">
+          </div>
+          <div class="mb-3">
+            <input type="text" name="token_contrasena" id="token_contrasena" class="form-control" placeholder="introduzca el token recibido">
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button class="btn btn-outline-primary" type="button" id="enviar_token">Enviar Token</button>
+          <button class="btn btn-primary" type="button" id="actualizar_dato">Actualizar</button>
+        </div>
+      </form>
     </div>
-
-  <form id="formulario" class="p-4 rounded shadow-sm">
-  <h2 class="mb-4 mt-4 text-primary text-center">Actualizar Información</h2>
-
-  <div class="mb-3">
-    <select id="opcion" name="opcion" class="form-select" required>
-      <option value="seleccione">Seleccione</option>
-      <option value="usuario">Usuario</option>
-      <option value="contrasena">Contraseña</option>
-    </select>
   </div>
 
-  <div class="mb-3">
-    <input type="email" name="correo" id="correo" class="form-control" placeholder="Correo electrónico" required>
+  <div class="floating-button-wrapper">
+    <div class="hover-message">Inicio</div>
+    <a href="index.php" class="floating-button">
+      <i class="fas fa-house fa-lg" style="color: white"></i>
+    </a>
   </div>
-
-  <div id="campo_usuario" style="display: none;">
-    <div class="mb-3">
-      <input type="text" name="nuevo_usuario" id="nuevo_usuario" class="form-control" placeholder="Nuevo usuario">
-    </div>
-    <div class="mb-3">
-      <input type="text" name="token_usuario" id="token_usuario" class="form-control" placeholder="introduzca el token recibido">
-    </div>
-  </div>
-
-  <div id="campo_contrasena" style="display: none;">
-    <div class="mb-3">
-      <input type="password" name="nueva_contrasena" id="nueva_contrasena" class="form-control" placeholder="Nueva contraseña">
-    </div>
-    <div class="mb-3">
-      <input type="text" name="token_contrasena" id="token_contrasena" class="form-control" placeholder="introduzca el token recibido">
-    </div>
-  </div>
-
-  <div class="d-flex justify-content-center gap-3 mt-4">
-    <button class="btn btn-outline-primary" type="button" id="enviar_token">Enviar Token</button>
-    <button class="btn btn-primary" type="button" id="actualizar_dato">Actualizar</button>
-  </div>
-</form>
-
-
-
-<div class="floating-button-wrapper">
-  <div class="hover-message">Inicio</div>
-  <a href="index.php" class="floating-button">
-    <i class="fas fa-house fa-lg" style="color: white"></i>
-  </a>
-</div>
 
 
   <script src="Assets/JavaScript/Canvas.js"></script>

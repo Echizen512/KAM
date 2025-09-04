@@ -209,6 +209,19 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
         </a>
       </div>
 
+      <!-- Card: Materias -->
+<div class="col-lg-4 col-md-6">
+  <a href="Materias.php" class="text-decoration-none">
+    <div class="card module-card border border-primary rounded-4 shadow-sm bg-light text-primary d-flex justify-content-center align-items-center">
+      <div class="text-center">
+        <i class="fas fa-list-check fs-1 mb-3"></i>
+        <h5 class="fw-semibold mb-0">Materias</h5>
+      </div>
+    </div>
+  </a>
+</div>
+
+
     </div>
   </div>
 

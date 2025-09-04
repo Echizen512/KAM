@@ -127,7 +127,7 @@ if (!$result) {
 <div class="container mx-auto my-5">
   <div class="card shadow-sm border-0 rounded-4">
     <div class="card-header bg-primary text-white rounded-top-4 d-flex align-items-center">
-      <i class="fas fa-fingerprint icon fa-lg me-2"></i>
+      <i class="fas fa-user-check icon fa-lg me-2"></i>
       <h5 class="mb-0">Gestión de Asistencia</h5>
     </div>
     <div class="card-body rounded-bottom-4">
