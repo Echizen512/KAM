@@ -115,18 +115,23 @@ class PDF extends FPDF
         $this->Cell(50, 10, 'Cargo', 1, 1, 'C', true);
     }
 
-    function AddTableRow($persona)
-    {
-        $this->SetFont('Arial', '', 12);
-        $this->SetTextColor(0, 0, 0);
-        $this->Cell(30, 10, utf8_decode($persona['nombre_personal']), 1, 0, 'C');
-        $this->Cell(30, 10, utf8_decode($persona['apellido_personal']), 1, 0, 'C');
-        $this->Cell(30, 10, utf8_decode($persona['cedula_personal']), 1, 0, 'C');
-        $this->Cell(50, 10, utf8_decode($persona['correo_personal']), 1, 0, 'C');
-        $this->Cell(45, 10, utf8_decode($persona['nacimiento_personal']), 1, 0, 'C');
-        $this->Cell(45, 10, utf8_decode($persona['ingreso_personal']), 1, 0, 'C');
-        $this->Cell(50, 10, utf8_decode($persona['cargo_personal']), 1, 1, 'C');
-    }
+  function AddTableRow($persona)
+  {
+      $this->SetFont('Arial', '', 12);
+      $this->SetTextColor(0, 0, 0);
+
+      // Formatear fechas
+      $nacimiento = date('d/m/Y', strtotime($persona['nacimiento_personal']));
+      $ingreso = date('d/m/Y', strtotime($persona['ingreso_personal']));
+
+      $this->Cell(30, 10, utf8_decode($persona['nombre_personal']), 1, 0, 'C');
+      $this->Cell(30, 10, utf8_decode($persona['apellido_personal']), 1, 0, 'C');
+      $this->Cell(30, 10, utf8_decode($persona['cedula_personal']), 1, 0, 'C');
+      $this->Cell(50, 10, utf8_decode($persona['correo_personal']), 1, 0, 'C');
+      $this->Cell(45, 10, utf8_decode($nacimiento), 1, 0, 'C');
+      $this->Cell(45, 10, utf8_decode($ingreso), 1, 0, 'C');
+      $this->Cell(50, 10, utf8_decode($persona['cargo_personal']), 1, 1, 'C');
+  }
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
@@ -216,7 +221,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['all'])) {
   backdrop-filter: none; /* evita efectos de desenfoque si los hay */
 }
 
+.floating-button {
+    background-color: #2378b2;
+    opacity: 0.6;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 35px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
 
+  .right-button {
+    right: 20px;
+  }
+
+  .left-button {
+    left: 20px;
+  }
+
+  .floating-button:hover {
+    opacity: 0.85;
+  }
+
+  .floating-button .hover-message {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    background-color: #2378b2;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .right-button .hover-message {
+    right: 0;
+  }
+
+  .left-button .hover-message {
+    left: 0;
+  }
+
+  .floating-button:hover .hover-message {
+    display: block;
+  }
 </style>
 
   <div class="container-fluid py-3 border-bottom">
@@ -269,8 +327,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['all'])) {
                         <td>" . htmlspecialchars($row["apellido_personal"]) . "</td>
                         <td>" . htmlspecialchars($row["cedula_personal"]) . "</td>
                         <td>" . htmlspecialchars($row["correo_personal"]) . "</td>
-                        <td>" . date("m/Y", strtotime($row['nacimiento_personal'])) . "</td>
-                        <td>" . date("m/Y", strtotime($row['ingreso_personal'])) . "</td>
+                        <td>" . date("d/m/Y", strtotime($row['nacimiento_personal'])) . "</td>
+                        <td>" . date("d/m/Y", strtotime($row['ingreso_personal'])) . "</td>
                         <td>" . htmlspecialchars($row["cargo_personal"]) . "</td>
                       </tr>";
               }
@@ -291,12 +349,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['all'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="Assets/JavaScript/CanvasTabla.js"></script>
 
-        <a href="Inicio.php">
-        <div class="floating-button">
-        <i class="fas fa-house fa-xl text-white"></i>
-        <div class="hover-message">Inicio</div>
-        </div>
-    </a>
+  <!-- Botón de Inicio (derecha) -->
+<a href="Inicio.php">
+  <div class="floating-button right-button">
+    <i class="fas fa-house fa-xl text-white"></i>
+    <div class="hover-message">Inicio</div>
+  </div>
+</a>
+
+<!-- Botón de Atrás (izquierda) -->
+<a href="javascript:history.back()">
+  <div class="floating-button left-button">
+    <i class="fas fa-arrow-left fa-xl text-white"></i>
+    <div class="hover-message">Atrás</div>
+  </div>
+</a>
   
   
     <script>

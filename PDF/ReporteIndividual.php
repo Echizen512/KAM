@@ -49,7 +49,7 @@ $password = "";
 $dbname = "base_kam";
 
 // Crear conexión
-$conn = new mysqli("localhost", "root", "", "base_kam");
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
@@ -58,7 +58,6 @@ if ($conn->connect_error) {
 if (isset($_GET['id_personal'])) {
     $id_personal = intval($_GET['id_personal']);
     
-    // Modificar la consulta para seleccionar la fila correspondiente
     $sql = "SELECT nombre_personal, apellido_personal, cedula_personal, correo_personal, nacimiento_personal, ingreso_personal, cargo_personal 
             FROM persona 
             WHERE id_personal = $id_personal";
@@ -71,6 +70,14 @@ if (isset($_GET['id_personal'])) {
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+
+        // Formatear fechas si son válidas
+        foreach (['nacimiento_personal', 'ingreso_personal'] as $fechaCampo) {
+            if (!empty($row[$fechaCampo]) && strtotime($row[$fechaCampo])) {
+                $row[$fechaCampo] = date('d/m/Y', strtotime($row[$fechaCampo]));
+            }
+        }
+
         $pdf = new PDF();
         $pdf->AliasNbPages();
         $pdf->AddPage();
@@ -78,11 +85,12 @@ if (isset($_GET['id_personal'])) {
 
         // Contenido de la tabla
         foreach ($row as $key => $value) {
-            $pdf->Cell(50, 10, utf8_decode(ucfirst(str_replace("_personal", "", $key))) . ':', 1);
+            $label = ucfirst(str_replace("_personal", "", $key));
+            $pdf->Cell(50, 10, utf8_decode($label . ':'), 1);
             $pdf->Cell(0, 10, utf8_decode($value), 1, 1);
         }
 
-        $pdf->Output('D', 'informacion_personal_' . $id_personal . '.pdf'); // Output to download with unique filename
+        $pdf->Output('D', 'informacion_personal_' . $id_personal . '.pdf');
     } else {
         echo "No se encontraron datos.";
     }

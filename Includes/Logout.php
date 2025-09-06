@@ -61,7 +61,7 @@ if (isset($_POST['confirm_logout']) && $_POST['confirm_logout'] === 'yes') {
                 form.submit();
             } else {
                 // Cancelar acción y redirigir a Inicio.php
-                window.location.href = 'Inicio.php';
+                window.location.href = '../Inicio.php';
             }
         });
     </script>

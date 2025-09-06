@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 
     // Redirection to editar.php
-    header("Location: PERSONAL.php");
+    header("Location: ../Personal.php");
     exit();
 }
 ?>

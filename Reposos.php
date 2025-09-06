@@ -121,44 +121,59 @@ if ($result === false) {
 
     
     .floating-button {
-        background-color: #2378b2;
-        opacity: 0.6;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        position: fixed;
-        bottom: 35px;
-        right: 20px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: opacity 0.3s ease;
-        }
+    background-color: #2378b2;
+    opacity: 0.6;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 35px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
 
-        .floating-button:hover {
-        opacity: 0.85;
-        }
+  .right-button {
+    right: 20px;
+  }
 
-        .floating-button .hover-message {
-        display: none;
-        position: absolute;
-        bottom: 75px;
-        right: 0;
-        background-color: #2378b2;
-        color: white;
-        padding: 6px 10px;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        white-space: nowrap;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
+  .left-button {
+    left: 20px;
+  }
 
-        .floating-button:hover .hover-message {
-        display: block;
-        }
+  .floating-button:hover {
+    opacity: 0.85;
+  }
+
+  .floating-button .hover-message {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    background-color: #2378b2;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .right-button .hover-message {
+    right: 0;
+  }
+
+  .left-button .hover-message {
+    left: 0;
+  }
+
+  .floating-button:hover .hover-message {
+    display: block;
+  }
    </style>
 
 
@@ -175,7 +190,7 @@ if ($result === false) {
 <div class="container my-5">
   <div class="card shadow-sm border-0 rounded-4">
     <div class="card-header bg-primary text-white rounded-top-4 d-flex align-items-center">
-      <i class="fas fa-fingerprint fa-lg me-2"></i>
+      <i class="fas fa-bed-pulse fa-lg me-2"></i>
       <h5 class="mb-0">Permisos por Reposo</h5>
     </div>
     <div class="card-body rounded-bottom-4">
@@ -287,12 +302,21 @@ if ($result === false) {
 
 <div class="toast-container" id="toastContainer"></div>
 
-  <a href="Inicio.php">
-    <div class="floating-button">
-      <i class="fas fa-house fa-xl text-white"></i>
-      <div class="hover-message">Inicio</div>
-    </div>
-  </a>
+<!-- Botón de Inicio (derecha) -->
+<a href="Inicio.php">
+  <div class="floating-button right-button">
+    <i class="fas fa-house fa-xl text-white"></i>
+    <div class="hover-message">Inicio</div>
+  </div>
+</a>
+
+<!-- Botón de Atrás (izquierda) -->
+<a href="Permisos.php">
+  <div class="floating-button left-button">
+    <i class="fas fa-arrow-left fa-xl text-white"></i>
+    <div class="hover-message">Atrás</div>
+  </div>
+</a>
   
 <script src="Assets/JavaScript/CanvasTabla.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

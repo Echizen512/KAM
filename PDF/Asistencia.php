@@ -64,10 +64,15 @@ class PDF extends FPDF {
         $this->SetFont('Arial', '', 12);
         $this->SetTextColor(0);
         $this->SetX(30);
-        $this->Cell(80, 10, utf8_decode($asistencia['fecha_asistencia']), 1, 0, 'C');
+
+        // Formateo de fecha: dd/mm/yyyy
+        $fechaFormateada = date("d/m/Y", strtotime($asistencia['fecha_asistencia']));
+
+        $this->Cell(80, 10, utf8_decode($fechaFormateada), 1, 0, 'C');
         $this->Cell(80, 10, date("h:i A", strtotime($asistencia['hora_entrada'])), 1, 0, 'C');
         $this->Cell(80, 10, date("h:i A", strtotime($asistencia['hora_salida'])), 1, 1, 'C');
     }
+
 }
 
 // Validación de parámetros

@@ -77,6 +77,63 @@ if (!$result) {
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
 
+<style>
+  .floating-button {
+    background-color: #2378b2;
+    opacity: 0.6;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 35px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
+
+  .right-button {
+    right: 20px;
+  }
+
+  .left-button {
+    left: 20px;
+  }
+
+  .floating-button:hover {
+    opacity: 0.85;
+  }
+
+  .floating-button .hover-message {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    background-color: #2378b2;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .right-button .hover-message {
+    right: 0;
+  }
+
+  .left-button .hover-message {
+    left: 0;
+  }
+
+  .floating-button:hover .hover-message {
+    display: block;
+  }
+</style>
+
 <body>
 
   <canvas id="animated-bg"></canvas>
@@ -118,8 +175,8 @@ if (!$result) {
                           <td>" . htmlspecialchars($row["nombre_personal"]) . "</td>
                           <td>" . htmlspecialchars($row["apellido_personal"]) . "</td>
                           <td>" . htmlspecialchars($row["cedula_personal"]) . "</td>
-                          <td>" . htmlspecialchars($row["nacimiento_personal"]) . "</td>
-                          <td>" . date("m Y", strtotime($row["ingreso_personal"])) . "</td>
+                          <td>" . date("d/m/Y", strtotime($row['nacimiento_personal'])) . "</td>
+                          <td>" . date("d/m/Y", strtotime($row['ingreso_personal'])) . "</td>
                           <td>" . htmlspecialchars($row["cargo_personal"]) . "</td>
                           <td>
                             <a href='PDF/ReporteIndividual.php?id_personal=" . $row["id_personal"] . "' class='btn btn-sm btn-outline-danger rounded-circle' title='Descargar PDF'>
@@ -141,12 +198,20 @@ if (!$result) {
   </div>
 </div>
 
-    <a href="Inicio.php">
-        <div class="floating-button">
-        <i class="fas fa-house fa-xl text-white"></i>
-        <div class="hover-message">Inicio</div>
-        </div>
-    </a>
+<a href="Inicio.php">
+  <div class="floating-button right-button">
+    <i class="fas fa-house fa-xl text-white"></i>
+    <div class="hover-message">Inicio</div>
+  </div>
+</a>
+
+<!-- Botón de Atrás (izquierda) -->
+<a href="javascript:history.back()">
+  <div class="floating-button left-button">
+    <i class="fas fa-arrow-left fa-xl text-white"></i>
+    <div class="hover-message">Atrás</div>
+  </div>
+</a>
 
   <script>
     $(document).ready(function () {

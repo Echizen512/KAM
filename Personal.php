@@ -103,45 +103,60 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
   backdrop-filter: none; 
 }
 
-.floating-button {
-  background-color: #2378b2;
-  opacity: 0.6;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  position: fixed;
-  bottom: 35px;
-  right: 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: opacity 0.3s ease;
-}
+  .floating-button {
+    background-color: #2378b2;
+    opacity: 0.6;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 35px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
 
-.floating-button:hover {
-  opacity: 0.85;
-}
+  .right-button {
+    right: 20px;
+  }
 
-.floating-button .hover-message {
-  display: none;
-  position: absolute;
-  bottom: 75px;
-  right: 0;
-  background-color: #2378b2;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
+  .left-button {
+    left: 20px;
+  }
 
-.floating-button:hover .hover-message {
-  display: block;
-}
+  .floating-button:hover {
+    opacity: 0.85;
+  }
+
+  .floating-button .hover-message {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    background-color: #2378b2;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .right-button .hover-message {
+    right: 0;
+  }
+
+  .left-button .hover-message {
+    left: 0;
+  }
+
+  .floating-button:hover .hover-message {
+    display: block;
+  }
 </style>
 
 <body>
@@ -182,17 +197,6 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
 
       <div class="modal-body">
         <form id="registroForm" method="post" action="#">
-          <div class="text-center mb-3">
-            <div class="image-tooltip-container" style="position: relative; display: inline-block">
-              <img src="Assets/Images/huella3.png" width="55" height="55" alt="Usuario" />
-              <div onclick="showAlert()" style="position: absolute; bottom: 4px; right: 1px; width: 20px; height: 20px; background-color: blue; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                <span style="color: white; font-size: 18px; font-weight: bold">+</span>
-              </div>
-              <span class="tooltiptext">Registra tu huella</span>
-            </div>
-          </div>
-
-          <input type="hidden" name="huella_dactilar" id="huella_dactilar" />
 
           <div class="row mb-3">
             <div class="col-md-6">
@@ -318,45 +322,52 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
               </tr>
             </thead>
             <tbody>
-              <?php 
+             <?php 
               if ($result->num_rows > 0) { 
                   $numeroFila = 1;
                   while ($row = $result->fetch_assoc()) {
                       echo "<tr id='row-" . htmlspecialchars($row['id_personal']) . "'> 
-                              <td>" . htmlspecialchars($row['nombre_personal']) . "</td>
-                              <td>" . htmlspecialchars($row['apellido_personal']) . "</td>
-                              <td>" . htmlspecialchars($row['cedula_personal']) . "</td> 
-                              <td>" . htmlspecialchars($row['correo_personal']) . "</td> 
-                              <td>" . date("m/Y", strtotime($row['nacimiento_personal'])) . "</td>
-                              <td>" . date("m/Y", strtotime($row['ingreso_personal'])) . "</td>
-                              <td>" . htmlspecialchars($row['cargo_personal']) . "</td> 
-                              <td>
-                                <button class='btn btn-sm btn-outline-primary rounded-circle' title='Editar'
-                                  onclick=\"openEditModal('" . htmlspecialchars($row['id_personal']) . "', 
-                                  '" . htmlspecialchars($row['nombre_personal']) . "', 
-                                  '" . htmlspecialchars($row['apellido_personal']) . "', 
-                                  '" . htmlspecialchars($row['cedula_personal']) . "', 
-                                  '" . htmlspecialchars($row['correo_personal']) . "', 
-                                  '" . htmlspecialchars($row['nacimiento_personal']) . "', 
-                                  '" . htmlspecialchars($row['ingreso_personal']) . "', 
-                                  '" . htmlspecialchars($row['cargo_personal']) . "')\">
-                                  <i class='fas fa-pencil-alt'></i>
-                                </button>
+                      <td>" . htmlspecialchars($row['nombre_personal']) . "</td>
+                      <td>" . htmlspecialchars($row['apellido_personal']) . "</td>
+                      <td>" . htmlspecialchars($row['cedula_personal']) . "</td> 
+                      <td>" . htmlspecialchars($row['correo_personal']) . "</td> 
+                      <td>" . date("d/m/Y", strtotime($row['nacimiento_personal'])) . "</td>
+                      <td>" . date("d/m/Y", strtotime($row['ingreso_personal'])) . "</td>
+                      <td>" . htmlspecialchars($row['cargo_personal']) . "</td> 
+                      <td>
+                        <button class='btn btn-sm btn-outline-primary rounded-circle' title='Editar'
+                          onclick=\"openEditModal('" . htmlspecialchars($row['id_personal']) . "', 
+                          '" . htmlspecialchars($row['nombre_personal']) . "', 
+                          '" . htmlspecialchars($row['apellido_personal']) . "', 
+                          '" . htmlspecialchars($row['cedula_personal']) . "', 
+                          '" . htmlspecialchars($row['correo_personal']) . "', 
+                          '" . htmlspecialchars($row['nacimiento_personal']) . "', 
+                          '" . htmlspecialchars($row['ingreso_personal']) . "', 
+                          '" . htmlspecialchars($row['cargo_personal']) . "')\">
+                          <i class='fas fa-pencil-alt'></i>
+                        </button>
+                      </td> 
+                      <td>
+                        <div class='form-check form-switch d-flex justify-content-center'>
+                          <input class='form-check-input' type='checkbox' " . 
+                            ($row['activo'] ? "checked" : "") . "
+                            onclick='toggleStatus(this)'
+                            data-id='" . htmlspecialchars($row['id_personal']) . "'>
+                        </div>
+                        <span class='badge mt-1 " . 
+                            ($row['activo'] ? "bg-success" : "bg-secondary") . "' id='estado-" . $row['id_personal'] . "'>" . 
+                            ($row['activo'] ? "Activo" : "Inactivo") . "
+                        </span>
+                      </td>
+                    </tr>";
 
-                              </td> 
-                              <td>
-                                <div class='form-check form-switch d-flex justify-content-center'>
-                                  <input class='form-check-input' type='checkbox' onclick='toggleStatus(this)' data-id='" . htmlspecialchars($row['id_personal']) . "'>
-                                </div>
-                                <span class='badge bg-success mt-1'>Activo</span>
-                              </td> 
-                            </tr>";
                       $numeroFila++;
                   }
               } else {
                   echo "<tr><td colspan='10'>No se encontraron registros</td></tr>";
               }
               ?>
+
             </tbody>
           </table>
         </div>
@@ -380,6 +391,63 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
     });
   });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function toggleStatus(checkbox) {
+  const id = checkbox.dataset.id;
+  const nuevoEstado = checkbox.checked ? 1 : 0;
+
+  Swal.fire({
+    title: '¿Cambiar estado?',
+    text: nuevoEstado ? '¿Activar este personal?' : '¿Desactivar este personal?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, confirmar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch('./PHP/actualizar_estado_personal.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `id=${encodeURIComponent(id)}&activo=${encodeURIComponent(nuevoEstado)}`
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        if (data.success) {
+          // Actualizar visualmente el badge sin recargar
+          const badge = document.getElementById('estado-' + id);
+          badge.textContent = nuevoEstado ? 'Activo' : 'Inactivo';
+          badge.className = 'badge mt-1 ' + (nuevoEstado ? 'bg-success' : 'bg-secondary');
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Estado actualizado',
+            text: data.message,
+            timer: 1500,
+            showConfirmButton: false
+          });
+        } else {
+          throw new Error(data.message || 'Error inesperado');
+        }
+      })
+      .catch(err => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.message
+        });
+        checkbox.checked = !nuevoEstado; // revertir si falla
+      });
+    } else {
+      checkbox.checked = !nuevoEstado; // revertir si cancela
+    }
+  });
+}
+</script>
+
 
 
  <div id="editModal" class="modal2">
@@ -461,12 +529,15 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
     </div>
 </div>
 
-  <a href="Inicio.php">
-    <div class="floating-button">
-      <i class="fas fa-house fa-xl text-white"></i>
-      <div class="hover-message">Inicio</div>
-    </div>
-  </a>
+<!-- Botón de Inicio (derecha) -->
+<a href="Inicio.php">
+  <div class="floating-button right-button">
+    <i class="fas fa-house fa-xl text-white"></i>
+    <div class="hover-message">Inicio</div>
+  </div>
+</a>
+
+
 
 <script src="Assets/JavaScript/CanvasTabla.js"></script>
 <script src="Assets/JavaScript/RegistroPersonal.js"></script>

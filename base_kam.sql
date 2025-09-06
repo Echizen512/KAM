@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-09-2025 a las 03:58:21
+-- Tiempo de generación: 06-09-2025 a las 20:17:44
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -89,7 +89,8 @@ INSERT INTO `asistencia` (`id_personal`, `cedula_personal`, `fecha_asistencia`, 
 (96, 'V-7220772', '2025-09-03', '19:12:30', '19:13:38', 'manual', '2025-09-03 23:12:31', '2025-09-03 23:13:42', NULL, 'pendiente', NULL),
 (97, 'V-4368163', '2025-09-03', '21:40:35', NULL, 'manual', '2025-09-04 01:40:37', '2025-09-04 01:40:37', NULL, 'pendiente', NULL),
 (98, 'V-7151988', '2025-09-03', '21:45:20', NULL, 'manual', '2025-09-04 01:45:21', '2025-09-04 01:45:21', NULL, 'pendiente', NULL),
-(99, 'V-3896345', '2025-09-03', '21:54:26', NULL, 'manual', '2025-09-04 01:54:27', '2025-09-04 01:54:27', NULL, 'pendiente', NULL);
+(99, 'V-3896345', '2025-09-03', '21:54:26', NULL, 'manual', '2025-09-04 01:54:27', '2025-09-04 01:54:27', NULL, 'pendiente', NULL),
+(100, 'V-8815415', '2025-09-06', '11:37:38', '11:38:46', 'manual', '2025-09-06 15:37:39', '2025-09-06 15:38:47', NULL, 'pendiente', NULL);
 
 -- --------------------------------------------------------
 
@@ -200,7 +201,23 @@ INSERT INTO `bitacora` (`id`, `usuario_id`, `nombre_usuario`, `correo`, `accion`
 (147, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-03 21:40:57'),
 (148, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-03 21:41:02'),
 (149, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-03 21:45:45'),
-(150, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-03 21:55:05');
+(150, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-03 21:55:05'),
+(151, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-05 11:57:19'),
+(152, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-05 12:20:13'),
+(153, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-05 12:22:43'),
+(154, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-05 12:39:39'),
+(155, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-05 17:04:08'),
+(156, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:17:51'),
+(157, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:37:54'),
+(158, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:39:08'),
+(159, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:42:26'),
+(160, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:44:47'),
+(161, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:54:24'),
+(162, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 11:58:42'),
+(163, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 12:05:59'),
+(164, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 12:11:11'),
+(165, 31, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-09-06 12:19:20'),
+(166, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 13:07:45');
 
 -- --------------------------------------------------------
 
@@ -237,16 +254,16 @@ CREATE TABLE `bloques_parcial` (
 --
 
 INSERT INTO `bloques_parcial` (`id`, `horario_id`, `dia`, `hora`, `nivel`, `seccion`) VALUES
-(1, 2, 'Lunes', '2', '1° nivel', '1'),
-(2, 3, 'Lunes', '2', '1° nivel', '1'),
-(3, 4, 'Lunes', '2', '1° grado', '1'),
-(4, 5, 'Lunes', '2', '2° nivel', '2'),
-(6, 7, 'Lunes', '10:00 - 12:00 PM', '2° año', '2'),
-(7, 8, 'Lunes', '2', '4° año', '1'),
-(8, 9, 'Martes', '9:00 AM - 10:00 PM', '2° año', '3'),
-(9, 10, 'Miércoles', '9:00 AM - 10:00 PM', '3° año', '2'),
-(10, 11, 'Miércoles', '9:00 AM - 10:00 PM', '3° año', '2'),
-(11, 12, 'Martes', '9:00 AM - 10:00 PM', '3° año', '2');
+(1, 1, 'Lunes', '7:00 AM - 9:30 AM', '1° nivel', '1'),
+(2, 2, 'Lunes', '7:00 AM - 9:30 AM', '1° nivel', '1'),
+(3, 3, 'Martes', '7:00 AM - 9:30 AM', '2° grado', '1'),
+(4, 4, 'Miércoles', '7:00 AM - 9:30 AM', '3° año', '2'),
+(5, 5, 'Martes', '7:00 AM - 9:30 AM', '1° nivel', '1'),
+(6, 6, 'Lunes', '7:00 AM - 9:30 AM', '2° grado', '1'),
+(7, 7, 'Lunes', '7:00 AM - 9:30 AM', '2° año', '2'),
+(8, 8, 'Lunes', '7:00 AM - 9:30 AM', '1° nivel', '1'),
+(9, 9, 'Lunes', '7:00 AM - 9:30 AM', '2° grado', '1'),
+(10, 10, 'Martes', '7:00 AM - 9:30 AM', '1° año', '1');
 
 -- --------------------------------------------------------
 
@@ -287,75 +304,6 @@ CREATE TABLE `horarios` (
   `total_horas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Volcado de datos para la tabla `horarios`
---
-
-INSERT INTO `horarios` (`id`, `cedula`, `materia_id`, `tipo`, `total_horas`) VALUES
-(3, 'V-8815415', 3, 'parcial', 1),
-(4, 'V-8815415', 6, 'parcial', 2),
-(5, 'V-8815415', 5, 'parcial', 1),
-(7, 'V-8815415', 6, 'parcial', 2),
-(8, 'V-8815415', 6, 'parcial', 1),
-(12, 'V-8815415', 11, 'parcial', 2);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `horarios_general`
---
-
-CREATE TABLE `horarios_general` (
-  `id` int(11) NOT NULL,
-  `id_personal` int(11) DEFAULT NULL,
-  `docente` varchar(255) DEFAULT NULL,
-  `cedula_personal` varchar(255) DEFAULT NULL,
-  `nivel_academico` varchar(255) DEFAULT NULL,
-  `cargo_personal` varchar(255) DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `dia` varchar(255) DEFAULT NULL,
-  `materia` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Volcado de datos para la tabla `horarios_general`
---
-
-INSERT INTO `horarios_general` (`id`, `id_personal`, `docente`, `cedula_personal`, `nivel_academico`, `cargo_personal`, `hora`, `dia`, `materia`) VALUES
-(4, NULL, 'Maria Gil', NULL, 'Segundo  AÃ±o', 'Prof.Ingles', '07:00:00', 'Martes', 'InglÃ©s'),
-(5, NULL, 'Samuel Diaz', NULL, 'Segundo  AÃ±o', 'Prof.Matematicas/Fisica', '07:00:00', 'Lunes', 'MatemÃ¡tica'),
-(6, NULL, 'Samuel Diaz', NULL, 'Segundo  AÃ±o', 'Prof.Matematicas/Fisica', '08:30:00', 'Lunes', 'FÃ­sica'),
-(7, NULL, 'Samuel Diaz', NULL, 'Segundo  AÃ±o', 'Prof.Biologia/Informatica', '08:30:00', 'Martes', 'Castellano'),
-(8, NULL, 'Henriques Esequiel', NULL, 'graTercer AÃ±odo', 'Prof.Castellano/Proyecto', '08:30:00', 'Jueves', 'Castellano'),
-(9, NULL, 'Henriques Esequiel', NULL, 'graTercer AÃ±odo', 'Prof.Castellano/Proyecto', '10:00:00', 'Jueves', 'Proyecto');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `horarios_primaria`
---
-
-CREATE TABLE `horarios_primaria` (
-  `id` int(11) NOT NULL,
-  `id_personal` int(11) DEFAULT NULL,
-  `docente` varchar(255) DEFAULT NULL,
-  `cedula_personal` varchar(255) DEFAULT NULL,
-  `nivel_academico` varchar(255) DEFAULT NULL,
-  `cargo_personal` varchar(255) DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `dia` varchar(255) DEFAULT NULL,
-  `materia` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Volcado de datos para la tabla `horarios_primaria`
---
-
-INSERT INTO `horarios_primaria` (`id`, `id_personal`, `docente`, `cedula_personal`, `nivel_academico`, `cargo_personal`, `hora`, `dia`, `materia`) VALUES
-(2, NULL, 'Luddelis Vazquez', NULL, 'Tercer Grado', 'Prof.Ingles', '10:00:00', 'Martes', 'Matematicas'),
-(3, NULL, 'Aura C De Arcia', NULL, 'Tercer Grado', 'Maestra', '08:30:00', 'Martes', 'Lengua'),
-(10, NULL, 'Hilda Aponte', NULL, 'Tercer Grado', 'Prof.Ingles', '10:00:00', 'MiÃ©rcoles', 'Ingles');
-
 -- --------------------------------------------------------
 
 --
@@ -373,17 +321,25 @@ CREATE TABLE `materias` (
 --
 
 INSERT INTO `materias` (`id`, `nombre`, `nivel`) VALUES
-(2, 'Formación personal y social', 1),
-(3, 'Relación con el ambiente', 1),
-(4, 'Comnicación y representación', 1),
-(5, 'Manos a la Siembra', 1),
-(6, 'Ciencias Sociales', 2),
-(7, 'Cultura', 2),
-(8, 'Educación Física', 6),
-(9, 'Inglés', 6),
-(10, 'Lengua', 1),
-(11, 'Matemática', 6),
-(12, 'Prueba', 2);
+(1, 'Ingles Preescolar', 1),
+(2, 'Educación Física Preescolar', 1),
+(3, 'Matemática Preescolar', 1),
+(4, 'Manos a la Siembra', 1),
+(5, 'Comunicación y Representación', 1),
+(6, 'Matemáticas Primaria', 2),
+(7, 'Lengua Primaria', 2),
+(8, 'Ciencias Naturales', 2),
+(9, 'Ciencias Sociales', 2),
+(10, 'Educación Física Primaria', 2),
+(11, 'Ingles Primaria', 2),
+(12, 'Física', 3),
+(13, 'Química', 3),
+(14, 'Biología', 3),
+(15, 'Formación para la Soberania', 3),
+(16, 'GHC', 3),
+(17, 'Educación Física Media General', 3),
+(18, 'Inglés Media General', 3),
+(19, 'Matemática Media General', 3);
 
 -- --------------------------------------------------------
 
@@ -457,7 +413,7 @@ CREATE TABLE `persona` (
 INSERT INTO `persona` (`id_personal`, `nombre_personal`, `apellido_personal`, `cedula_personal`, `titulo_personal`, `correo_personal`, `nacimiento_personal`, `ingreso_personal`, `cargo_personal`, `huella_dactilar`, `nacionalidad_personal`, `tipo`, `activo`) VALUES
 (40, 'Reina', 'De Biel', 'V-3896345', '', 'Debiel08@gmail.com', '1956-03-14', '2010-05-02', 'Director', '', NULL, 'Parcial', 1),
 (41, 'Manuel', 'Biel', 'V-7220772', 'licenciado', 'bielmanu@gmail.com', '1962-03-18', '2000-05-02', 'Director', '', NULL, 'Parcial', 1),
-(42, 'Anile', 'Biel', 'V-17246672', 'licenciado', 'bielani@gmail.com', '1984-09-29', '2002-04-12', 'Contador', '', NULL, 'Parcial', 1),
+(42, 'Anile', 'Biel', 'V-17246672', 'licenciado', 'bielani@gmail.com', '1984-09-29', '2002-04-12', 'Contador', '', NULL, 'Parcial', 0),
 (43, 'Naydelis', 'Biel', 'V-18552119', 'licenciado', 'naybiel@gmail.com', '1986-09-28', '2005-04-06', 'RRHH', '', NULL, 'Parcial', 1),
 (44, 'Elides', 'Murillo', 'V-10361498', 'licenciado', 'munoz@gmail.com', '1970-11-13', '2000-04-02', 'Administradora', '', NULL, 'Parcial', 1),
 (45, 'Carmen', 'Delgado', 'V-8576270', 'licenciado', 'carmen@gmail.com', '1960-03-23', '2020-09-02', 'Director', '', NULL, 'Parcial', 1),
@@ -466,19 +422,19 @@ INSERT INTO `persona` (`id_personal`, `nombre_personal`, `apellido_personal`, `c
 (48, 'Marlene', 'Camacho', 'V-7165420', 'licenciado', 'narle67@gmail.com', '1962-04-23', '2020-05-22', 'Aux.Inicial', '', NULL, 'Parcial', 1),
 (49, 'Judiangel', 'Bello', 'V-20066074', '', 'judianhel@gmail.com', '1984-04-30', '2018-04-26', 'Maestra', '', NULL, 'Parcial', 1),
 (50, 'Yeilin', 'Cruz', 'V-18367569', 'tsu', 'yeuz1212@gmail.com', '1992-02-25', '2023-09-21', 'Maestra', '', NULL, 'Parcial', 1),
-(51, 'Aura', 'Arcia', 'V-8815415', 'licenciado', 'aurimi@gmail.com', '1967-02-21', '2022-05-25', 'Maestra', '', NULL, 'Parcial', 1),
+(51, 'Aura', 'Arcia', 'V-8815415', 'licenciado', 'aurimi@gmail.com', '1967-02-21', '2022-05-25', 'Maestra', '', NULL, 'Parcial', 0),
 (52, 'Luddelis', 'Vazquez', 'V-15600408', 'licenciado', 'ludehy@gmail.com', '1983-05-11', '2021-03-26', 'Maestra', '', NULL, 'Parcial', 1),
 (53, 'Hilda', 'Aponte', 'V-16012813', 'licenciado', 'hildaaponte@gmail.com', '1981-10-28', '2020-06-25', 'Maestra', '', NULL, 'Parcial', 1),
 (54, 'Carmen', 'Perdomo', 'V-3936259', 'licenciado', 'carmencita@gmail.com', '1952-11-20', '2020-01-05', 'Maestro', '', NULL, 'Parcial', 1),
 (55, 'Enedina', 'Colmenares', 'V-6152787', 'licenciado', 'endina@gmail.com', '1964-04-02', '2022-02-15', 'Maestra', '', NULL, 'Parcial', 1),
 (56, 'Rosa', 'Cordovez', 'V-8588854', 'bachiller', 'rosicor0@gmail.com', '1965-02-03', '2023-05-26', 'Obrero', '', NULL, 'Parcial', 1),
 (57, 'Emma', 'Noguera', 'V-8581945', 'bachiller', 'emmasa@gmail.com', '1960-06-17', '2015-02-05', 'Obrero', '', NULL, 'Parcial', 1),
-(58, 'Alberto', 'Colorado', 'V-12119997', 'bachiller', 'albert@gmail.com', '1969-06-07', '2024-05-26', 'Conserje', '', NULL, 'Parcial', 1),
+(58, 'Alberto', 'Colorado', 'V-12119997', 'bachiller', 'albert@gmail.com', '1969-06-07', '2024-05-26', 'Administradora', '', NULL, 'Parcial', 0),
 (59, 'Jorge', 'Dente', 'V-11180843', 'bachiller', 'dnetal@gmail.com', '1973-02-03', '2019-02-28', 'Mensajero', '', NULL, 'Parcial', 1),
 (60, 'Maribel', 'Valera', 'V-13700623', 'tsu', 'maribel@gmail.com', '1976-11-22', '2020-04-20', 'Secretaria', '', NULL, 'Parcial', 1),
 (61, 'Eliana', 'Calcurian', 'V-12810130', '', 'eli2345@gmail.com', '1976-05-12', '2020-08-29', 'Secretaria', '', NULL, 'Parcial', 1),
 (62, 'Mirna', 'Maestre', 'V-8817274', 'licenciado', 'mirne04@gmail.com', '1967-02-19', '2020-04-10', 'Coordinadora', '', NULL, 'Parcial', 1),
-(63, 'Ana', 'Ricaurte', 'V-10358492', 'licenciado', 'jkr1006@gmail.com', '1969-07-26', '2022-07-08', 'Prof.Matematica/fisica', '', NULL, 'Parcial', 1),
+(63, 'Ana', 'Ricaurte', 'V-10358492', 'licenciado', 'jkr1006@gmail.com', '1969-07-26', '2022-07-08', 'Prof.Matematica/fisica', '', NULL, 'Parcial', 0),
 (64, 'Esequiel', 'Henriques', 'V-10355279', 'licenciado', 'esequie98@gmail.com', '1970-11-20', '2020-02-22', 'Prof.Sociales', '', NULL, 'Parcial', 1),
 (65, 'Yolimer', 'Aponte', 'V-10969805', 'licenciado', 'yolimar5564@gmail.com', '1985-09-22', '2022-04-02', 'Prof.Biologia', '', NULL, 'Parcial', 1),
 (66, 'Neyvis', 'Arteaga', 'V-15055765', 'licenciado', 'neyarteaga@gmail.com', '1981-10-11', '2022-03-20', 'Prof.Ingles', '', NULL, 'Parcial', 1),
@@ -512,8 +468,7 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `usuario`, `nivel_usuario`, `correo`, `contrasena`, `token_recuperacion`, `expiracion_token`) VALUES
 (23, 'Alexandra', 'Secretaria', 'xandrapini@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL),
 (24, 'Marianny', 'RRHH', 'marian@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL),
-(25, 'kil', 'administrador', 'karlaad142@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL),
-(26, 'Echizen5135', 'administrador', 'jmrm19722@gmail.com', '$2y$10$FPo53WKNUnWimQRsZ1kJyO.IYiA.6OJ/ox5cr.vMCJZcbsL4eOOZG', '828516', '2025-08-25 22:53:30');
+(25, 'kil', 'administrador', 'karlaad142@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -574,18 +529,6 @@ ALTER TABLE `horarios`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `horarios_general`
---
-ALTER TABLE `horarios_general`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indices de la tabla `horarios_primaria`
---
-ALTER TABLE `horarios_primaria`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `materias`
 --
 ALTER TABLE `materias`
@@ -631,13 +574,13 @@ ALTER TABLE `usuario_roles`
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
+  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=151;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
 
 --
 -- AUTO_INCREMENT de la tabla `bloques_completo`
@@ -649,31 +592,19 @@ ALTER TABLE `bloques_completo`
 -- AUTO_INCREMENT de la tabla `bloques_parcial`
 --
 ALTER TABLE `bloques_parcial`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `horarios`
 --
 ALTER TABLE `horarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT de la tabla `horarios_general`
---
-ALTER TABLE `horarios_general`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- AUTO_INCREMENT de la tabla `horarios_primaria`
---
-ALTER TABLE `horarios_primaria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `permisos`
@@ -691,13 +622,13 @@ ALTER TABLE `permisos_modulos`
 -- AUTO_INCREMENT de la tabla `persona`
 --
 ALTER TABLE `persona`
-  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Restricciones para tablas volcadas

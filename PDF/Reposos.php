@@ -15,6 +15,11 @@ $motivo = $_GET['motivo'];
 $nombre_autoridad = $_GET['nombreAutoridad'];
 $cedula_autoriza = $_GET['cedulaAutoriza'];
 $condicion_permiso = $_GET['condicionPermiso'];
+
+// Formatear fechas
+$fecha_inicio_formateada = (!empty($fecha_inicio) && strtotime($fecha_inicio)) ? date('d/m/Y', strtotime($fecha_inicio)) : $fecha_inicio;
+$fecha_fin_formateada = (!empty($fecha_fin) && strtotime($fecha_fin)) ? date('d/m/Y', strtotime($fecha_fin)) : $fecha_fin;
+
 $sql = "SELECT * FROM persona WHERE id_personal = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_personal);
@@ -61,35 +66,28 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Arial', '', 12);
-$texto = "Por medio de la presente Yo $nombre_personal $apellido_personal, C.I. $cedula_personal, quien trabaja en esta institución como: $cargo_personal, deseo pedir permiso para ausentarme de la institución en los días $fecha_inicio por motivo de: $motivo. Condición de permiso: $condicion_permiso. Hasta los días: $fecha_fin.Autorizado por: $nombre_autoridad C.I: $cedula_autoriza.";
+
+$texto = "Por medio de la presente Yo $nombre_personal $apellido_personal, C.I. $cedula_personal, quien trabaja en esta institución como: $cargo_personal, deseo pedir permiso para ausentarme de la institución en los días $fecha_inicio_formateada por motivo de: $motivo. Condición de permiso: $condicion_permiso. Hasta los días: $fecha_fin_formateada. Autorizado por: $nombre_autoridad C.I: $cedula_autoriza.";
 $pdf->MultiCell(0, 10, utf8_decode($texto));
 
-// Insert a blank space of 20 lines
+// Espacio para firmas
 $pdf->Ln(30);
-
-// Create signature fields using display flex concept in PHP
-// Container
 $pdf->Ln(15);
-$pdf->Cell(0, 10, '', 0, 1); // Blank line to start new flex container
+$pdf->Cell(0, 10, '', 0, 1);
 
-// Flex item - left
 $pdf->Cell(90, 10, 'Firma del Solicitante:', 0, 0, 'C');
 $pdf->Cell(90, 10, 'Firma de la Autoridad:', 0, 1, 'C');
 
-// Flex item - middle
 $pdf->Cell(90, 10, '_________________________', 0, 0, 'C');
 $pdf->Cell(90, 10, '_________________________', 0, 1, 'C');
 
-// Flex item - right
 $pdf->Cell(90, 10, $nombre_personal . ' ' . $apellido_personal, 0, 0, 'C');
 $pdf->Cell(90, 10, 'Nombre de la Autoridad: ' . $nombre_autoridad, 0, 1, 'C');
 
-// Cedula
 $pdf->Ln(1);
-$pdf->Cell(90, 10, '', 0, 0); // Blank cell to align
+$pdf->Cell(90, 10, '', 0, 0);
 $pdf->Cell(90, 10, utf8_decode('Cédula:') . $cedula_autoriza, 0, 1, 'C');
 
-// Add "Sello" text at the bottom left
 $pdf->Cell(0, 10, "Sello", 0, 0, 'C');
 
 $pdf->Output('D', 'Permiso_Reposo.pdf');

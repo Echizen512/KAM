@@ -18,7 +18,6 @@
     <nav>
       <ul class="nav-links">
         <li><a href="Login.php">Iniciar Sesión</a></li>
-        <li><a href="manual.php">Manual de Usuario</a></li>
       </ul>
     </nav>
   </header>

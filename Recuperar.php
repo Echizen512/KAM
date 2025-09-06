@@ -158,10 +158,14 @@ html, body {
           </div>
         </div>
 
-        <div class="d-flex justify-content-center gap-3 mt-4">
-          <button class="btn btn-outline-primary" type="button" id="enviar_token">Enviar Token</button>
-          <button class="btn btn-primary" type="button" id="actualizar_dato">Actualizar</button>
-        </div>
+    <span id="contador_token" class="text-muted small d-block text-center mb-2" style="display: none;"></span>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button class="btn btn-outline-primary" type="button" id="enviar_token">Enviar Token</button>
+      <button class="btn btn-primary" type="button" id="actualizar_dato">Actualizar</button>
+    </div>
+
+
       </form>
     </div>
   </div>
@@ -179,6 +183,8 @@ html, body {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
+    let contadorIntervalo;
+
     // Mostrar campos según selección
     $("#opcion").change(function() {
         const opcion = $(this).val();
@@ -202,8 +208,32 @@ $(document).ready(function() {
                 title: res.status === "success" ? "¡Éxito!" : "Error",
                 text: res.message,
             });
+
+            if (res.status === "success") {
+                iniciarContador(60);
+            }
         });
     });
+
+    // Función para iniciar el contador
+    function iniciarContador(segundos) {
+        clearInterval(contadorIntervalo); 
+        const contador = $("#contador_token");
+        contador.removeClass("text-danger").addClass("text-muted").show();
+        contador.text(`Token válido por ${segundos} segundos`);
+
+        let tiempo = segundos;
+        contadorIntervalo = setInterval(() => {
+            tiempo--;
+            if (tiempo > 0) {
+                contador.text(`Token válido por ${tiempo} segundos`);
+            } else {
+                clearInterval(contadorIntervalo);
+                contador.text("Token expirado");
+                contador.removeClass("text-muted").addClass("text-danger");
+            }
+        }, 1000);
+    }
 
     // Actualizar usuario o contraseña
     $("#actualizar_dato").click(function() {
@@ -213,7 +243,7 @@ $(document).ready(function() {
 
         if (opcion === "usuario") {
             data.nuevo_usuario = $("#nuevo_usuario").val();
-            data.token = $("#token_usuario").val(); // Token para usuario
+            data.token = $("#token_usuario").val();
             $.post("PHP/actualizar_usuario.php", data, function(response) {
                 const res = JSON.parse(response);
                 if (res.status === "success") {
@@ -222,8 +252,10 @@ $(document).ready(function() {
                         title: "¡Éxito!",
                         text: res.message,
                     });
-                    $("#formulario")[0].reset(); // Reinicia el formulario
-                    $("#campo_usuario, #campo_contrasena").hide(); // Oculta los campos
+                    $("#formulario")[0].reset();
+                    $("#campo_usuario, #campo_contrasena").hide();
+                    $("#contador_token").hide();
+                    clearInterval(contadorIntervalo);
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -234,7 +266,7 @@ $(document).ready(function() {
             });
         } else if (opcion === "contrasena") {
             data.nueva_contrasena = $("#nueva_contrasena").val();
-            data.token = $("#token_contrasena").val(); // Token para contraseña
+            data.token = $("#token_contrasena").val();
             $.post("PHP/actualizar_contrasena.php", data, function(response) {
                 const res = JSON.parse(response);
                 if (res.status === "success") {
@@ -243,8 +275,10 @@ $(document).ready(function() {
                         title: "¡Éxito!",
                         text: res.message,
                     });
-                    $("#formulario")[0].reset(); // Reinicia el formulario
-                    $("#campo_usuario, #campo_contrasena").hide(); // Oculta los campos
+                    $("#formulario")[0].reset();
+                    $("#campo_usuario, #campo_contrasena").hide();
+                    $("#contador_token").hide();
+                    clearInterval(contadorIntervalo);
                 } else {
                     Swal.fire({
                         icon: "error",

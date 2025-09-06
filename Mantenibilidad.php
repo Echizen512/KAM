@@ -175,34 +175,34 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
   <div class="row g-4 justify-content-center">
 
     <!-- Módulo Personal -->
-    <div class="col-md-4 text-center">
+  <div class="col-lg-4 col-md-6">
       <a href="Configuracion.php" class="text-decoration-none">
-        <div class="card module-card d-flex flex-column justify-content-center align-items-center text-primary">
+        <div class="card module-card border border-primary rounded-4 shadow-sm bg-light text-primary d-flex justify-content-center align-items-center">
           <div class="icon-container mb-3">
-            <i class="fas fa-users"></i>
+            <i class="fas fa-users fs-1 mb-3"></i>
           </div>
-            <h4 class="fw-bold">Configuración de Usuario</h4>
+            <h4 class="fw-semibold mb-0">Configuración de Usuario</h4>
         </div>
       </a>
     </div>
 
     <!-- Módulo Asistencia -->
-    <div class="col-md-4 text-center">
+  <div class="col-lg-4 col-md-6">
       <a href="bitacora.php" class="text-decoration-none">
-        <div class="card module-card d-flex flex-column justify-content-center align-items-center text-primary">
+        <div class="card module-card border border-primary rounded-4 shadow-sm bg-light text-primary d-flex justify-content-center align-items-center">
           <div class="icon-container mb-3">
-            <i class="fas fa-database fa-4x text-primary"></i>
+            <i class="fas fa-database fs-1 mb-3 text-primary"></i>
           </div>
-          <h4 class="fw-bold">Bitácora</h4>
+          <h4 class="fw-semibold mb-0">Bitácora</h4>
         </div>
       </a>
     </div>
   </div>
 </div>
 
-  <!-- Botón flotante -->
+  <!-- Botón de Inicio (derecha) -->
   <a href="Inicio.php">
-    <div class="floating-button">
+    <div class="floating-button right-button">
       <i class="fas fa-house fa-xl text-white"></i>
       <div class="hover-message">Inicio</div>
     </div>

@@ -179,7 +179,7 @@ if (!verificar_acceso($nivel_usuario, $modulo, $db)) {
         <a href="tabla_reportes_asistencias.php" class="text-decoration-none">
           <div class="card module-card border border-primary rounded-4 shadow-sm bg-light text-primary d-flex justify-content-center align-items-center">
             <div class="text-center">
-              <i class="fas fa-fingerprint fs-1 mb-3"></i>
+              <i class="fas fa-user-check fs-1 mb-3"></i>
               <h5 class="fw-semibold mb-0">Asistencia</h5>
             </div>
           </div>

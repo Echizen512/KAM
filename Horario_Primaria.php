@@ -112,44 +112,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['ajax'])) {
 }
 
 .floating-button {
-  background-color: #2378b2;
-  opacity: 0.6;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  position: fixed;
-  bottom: 35px;
-  right: 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: opacity 0.3s ease;
-}
+    background-color: #2378b2;
+    opacity: 0.6;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    bottom: 35px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.3s ease;
+    z-index: 10;
+  }
 
-.floating-button:hover {
-  opacity: 0.85;
-}
+  .right-button {
+    right: 20px;
+  }
 
-.floating-button .hover-message {
-  display: none;
-  position: absolute;
-  bottom: 75px;
-  right: 0;
-  background-color: #2378b2;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
+  .left-button {
+    left: 20px;
+  }
 
-.floating-button:hover .hover-message {
-  display: block;
-}
+  .floating-button:hover {
+    opacity: 0.85;
+  }
+
+  .floating-button .hover-message {
+    display: none;
+    position: absolute;
+    bottom: 75px;
+    background-color: #2378b2;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .right-button .hover-message {
+    right: 0;
+  }
+
+  .left-button .hover-message {
+    left: 0;
+  }
+
+  .floating-button:hover .hover-message {
+    display: block;
+  }
 </style>
 
 <body>
@@ -238,7 +253,6 @@ $datos = $pdo->query($sql)->fetchAll();
               <th class="text-center">Día</th>
               <th class="text-center">Bloque</th>
               <th class="text-center">Nivel</th>
-              <th class="text-center">Sección</th>
               <th class="text-center">Acciones</th>
             </tr>
           </thead>
@@ -252,12 +266,18 @@ $datos = $pdo->query($sql)->fetchAll();
                 <td class="text-center"><?= $fila['dia'] ?></td>
                 <td class="text-center"><?= $fila['bloque'] ?></td>
                 <td class="text-center"><?= $fila['nivel'] ?></td>
-                <td class="text-center"><?= $fila['seccion'] ?></td>
                 <td class="text-center">
                   <button class="btn btn-sm btn-outline-warning rounded-circle" onclick="editarHorario(<?= $fila['horario_id'] ?>)">
                     <i class="fas fa-pencil-alt"></i>
                   </button>
+                  <form method="POST" action="PHP/eliminar_horario_primaria.php" id="formEliminarHorario<?= $fila['horario_id'] ?>" style="display:inline;">
+                    <input type="hidden" name="id" value="<?= $fila['horario_id'] ?>" />
+                    <button type="button" class="btn btn-sm btn-outline-danger rounded-circle" onclick="confirmarEliminacion(<?= $fila['horario_id'] ?>)">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </form>
                 </td>
+
               </tr>
             <?php endforeach; ?>
           </tbody>
@@ -288,7 +308,9 @@ $datos = $pdo->query($sql)->fetchAll();
             </select>
             <label>Total de Horas:</label>
             <input type="number" name="total_horas" id="horasEditar" class="form-control mb-2" required />
-            <button type="submit" class="btn btn-success mt-3">Actualizar</button>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-success mt-3">Actualizar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -315,6 +337,26 @@ $datos = $pdo->query($sql)->fetchAll();
       pageLength: 10
     });
   });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmarEliminacion(id) {
+  Swal.fire({
+    title: '¿Eliminar horario?',
+    text: 'Esta acción no se puede deshacer.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      document.getElementById('formEliminarHorario' + id).submit();
+    }
+  });
+}
 </script>
 
 
@@ -355,7 +397,7 @@ $datos = $pdo->query($sql)->fetchAll();
   </script>
 
 
-<form method="POST" action="guardar_horario.php">
+<form method="POST" action="PHP/guardar_horario_primaria.php">
   <div class="modal fade" id="modalHorario" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content zoom">
@@ -388,8 +430,10 @@ $datos = $pdo->query($sql)->fetchAll();
               </select>
 
             <div id="bloquesContainer"></div>
-              <button type="submit" class="btn btn-success mt-3">Guardar Horario</button>
-          </div>
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success mt-3">Guardar Horario</button>
+              </div>
+            </div>
 
         </div>
       </div>
@@ -446,8 +490,6 @@ function verificarCedula() {
       mensaje.className = "mb-2 text-success";
       document.getElementById("cedulaOculta").value = cedula;
       document.getElementById("formularioHorario").style.display = "block";
-
-
     } else {
       mensaje.innerText = data.mensaje || "Cédula no encontrada.";
       mensaje.className = "mb-2 text-danger";
@@ -460,7 +502,9 @@ function verificarCedula() {
     document.getElementById("formularioHorario").style.display = "none";
   });
 }
-document.querySelector("form").addEventListener("submit", function(e) {
+
+// Validación solo para el formulario de creación
+document.getElementById("formularioHorario")?.addEventListener("submit", function(e) {
   const cedulaOculta = document.getElementById("cedulaOculta").value;
   if (!cedulaOculta) {
     e.preventDefault();
@@ -497,7 +541,10 @@ function generarParcial() {
     <label>Total de Horas a Trabajar:</label>
     <input type="number" name="total_horas" class="form-control" required>
     <table class="table table-bordered mt-3">
-      <thead><tr><th class="text-center">Día</th><th class="text-center">Hora</th><th class="text-center">Nivel</th><th class="text-center">Sección</th></tr></thead>
+      <thead><tr><th class="text-center">Día</th>
+      <th class="text-center">Hora</th>
+      <th class="text-center">Nivel</th>
+      <th class="text-center">Sección</th></tr></thead>
       <tbody id="tbodyParcial">${filaParcial(opciones)}</tbody>
     </table>
   `;
@@ -531,7 +578,11 @@ function filaParcial(opciones) {
           <option value="6° grado">6° Grado</option>
       </select>
     </td>
-    <td class="text-center"><input type="text" name="seccion[]" class="form-control" required></td>
+    <td class="text-center">
+      <select name="seccion[]" class="form-control" required>
+        <option value="1">U</option>
+      </select>
+    </td>
   </tr>`;
 }
 
@@ -578,12 +629,20 @@ function agregarBloque(dia) {
 </script>
 
 </form>
- <a href="Inicio.php">
-    <div class="floating-button">
-      <i class="fas fa-house fa-xl text-white"></i>
-      <div class="hover-message">Inicio</div>
-    </div>
-  </a>
+<a href="Inicio.php">
+  <div class="floating-button right-button">
+    <i class="fas fa-house fa-xl text-white"></i>
+    <div class="hover-message">Inicio</div>
+  </div>
+</a>
+
+<!-- Botón de Atrás (izquierda) -->
+<a href="Horarios.php">
+  <div class="floating-button left-button">
+    <i class="fas fa-arrow-left fa-xl text-white"></i>
+    <div class="hover-message">Atrás</div>
+  </div>
+</a>
 
 <script src="Assets/JavaScript/CanvasTabla.js"></script>
 

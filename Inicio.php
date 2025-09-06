@@ -199,7 +199,6 @@ $materias_media = $db->query("SELECT COUNT(*) FROM materias WHERE nivel = '3'")-
   <li><a href="horarios.php"><div class="logo-container text-white"><i class="fas fa-calendar-alt icon"></i><div class="hover-message">Horarios</div></div></a></li>
   <li><a href="Reportes.php"><div class="logo-container text-white"><i class="fas fa-file-lines icon"></i><div class="hover-message">Reportes</div></div></a></li>
   <li><a href="Permisos.php"><div class="logo-container text-white"><i class="fas fa-key icon"></i><div class="hover-message">Permisos</div></div></a></li>
-  <li><a href="Manual.php"><div class="logo-container text-white"><i class="fas fa-circle-question icon"></i><div class="hover-message">Ayuda</div></div></a></li>
   <li><a href="mantenibilidad.php"><div class="logo-container text-white"><i class="fas fa-gear icon"></i><div class="hover-message">Mantenibilidad</div></div></a></li>
   <li><a href="Includes/Logout.php"><div class="logo-container text-white"><i class="fas fa-right-from-bracket icon"></i><div class="hover-message">Cerrar sesión</div></div></a></li>
 </nav>

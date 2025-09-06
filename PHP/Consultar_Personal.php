@@ -56,6 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
 }
 
 // Consultar los datos para llenar la tabla
-$sql = "SELECT id_personal, nombre_personal, apellido_personal, cedula_personal, correo_personal, nacimiento_personal, ingreso_personal, cargo_personal FROM persona";
+$sql = "SELECT id_personal, nombre_personal, apellido_personal, cedula_personal, correo_personal, nacimiento_personal, ingreso_personal, cargo_personal, activo FROM persona";
 $result = $conn->query($sql);
 ?>

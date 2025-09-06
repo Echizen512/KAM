@@ -154,12 +154,19 @@ if (!$result) {
                         <td class="apellido text-center"><?php echo htmlspecialchars($row['apellido_personal']); ?></td>
                         <td class="cedula text-center"><?php echo htmlspecialchars($row['cedula_personal']); ?></td>
                         <td class="<?php echo $row['fecha_asistencia'] === 'No registrado' 
-                        ? 'bg-danger-subtle text-danger fw-bold text-center' 
-                        : 'bg-success-subtle text-success fw-semibold text-center'; ?>">
-                        <?php echo $row['fecha_asistencia'] !== "No registrado" 
-                            ? htmlspecialchars($row['fecha_asistencia']) 
-                            : "No registrado"; ?>
+                            ? 'bg-danger-subtle text-danger fw-bold text-center' 
+                            : 'bg-success-subtle text-success fw-semibold text-center'; ?>">
+                            
+                            <?php
+                            if ($row['fecha_asistencia'] !== "No registrado") {
+                                $fecha = DateTime::createFromFormat('Y-m-d', $row['fecha_asistencia']);
+                                echo $fecha ? $fecha->format('d/m/Y') : htmlspecialchars($row['fecha_asistencia']);
+                            } else {
+                                echo "No registrado";
+                            }
+                            ?>
                         </td>
+
 
                         <td class="entrada <?php echo $row['hora_entrada_12h'] === 'No registrado' 
                         ? 'bg-danger-subtle text-danger fw-bold text-center' 
