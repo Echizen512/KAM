@@ -414,7 +414,8 @@ function confirmarEliminacion(id) {
         <div class="modal-body">
 
           <!-- Entrada cédula -->
-          <input type="text" id="cedulaInput" class="form-control mb-2" placeholder="Ingrese cédula" />
+          <input type="text" id="cedulaInput" class="form-control mb-2" placeholder="Ingrese cédula" value="V-" />
+
           <div class="button-group text-center mb-2">
             <button class="btn btn-primary mb-2" type="button" onclick="verificarCedula()">Verificar</button>
           </div>
@@ -480,6 +481,26 @@ document.addEventListener("DOMContentLoaded", () => {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
+const cedulaInput = document.getElementById("cedulaInput");
+
+cedulaInput.addEventListener("input", function () {
+  if (!this.value.startsWith("V-")) {
+    this.value = "V-" + this.value.replace(/[^0-9]/g, "");
+  } else {
+    const soloNumeros = this.value.slice(2).replace(/[^0-9]/g, "");
+    this.value = "V-" + soloNumeros;
+  }
+});
+
+cedulaInput.addEventListener("keydown", function (e) {
+  // Evita borrar el prefijo con Backspace o flechas
+  if (this.selectionStart <= 2 && (e.key === "Backspace" || e.key === "ArrowLeft")) {
+    e.preventDefault();
+  }
+});
+
+
 function verificarCedula() {
   const cedula = document.getElementById("cedulaInput").value.trim();
   const mensaje = document.getElementById("mensaje");

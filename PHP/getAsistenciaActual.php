@@ -1,5 +1,5 @@
 <?php
-include '../DataBase/conexion.php'; // Asegúrate de tener un archivo de conexión
+include '../DataBase/conexion.php'; 
 
 $cedula = $_GET['cedula'];
 $fecha_actual = date('Y-m-d');

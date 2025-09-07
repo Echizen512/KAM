@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Verifica si el usuario ha iniciado sesión
 if (!isset($_SESSION['usuario']) || !isset($_SESSION['correo'])) {
     echo "<!DOCTYPE html>
     <html lang='es'>
@@ -23,10 +22,9 @@ if (!isset($_SESSION['usuario']) || !isset($_SESSION['correo'])) {
         </script>
     </body>
     </html>";
-    exit; // Detiene la ejecución del resto del código PHP.
+    exit; 
 }
 
-// Obtén los datos del usuario desde la sesión
 $usuario = $_SESSION['usuario'];
 $correo = $_SESSION['correo'];
 ?>
@@ -52,7 +50,7 @@ $correo = $_SESSION['correo'];
 <body>
 
 <style>
-      .floating-button {
+  .floating-button {
     background-color: #2378b2;
     opacity: 0.6;
     border: none;
@@ -107,18 +105,112 @@ $correo = $_SESSION['correo'];
     display: block;
   }
 
-        div.dataTables_filter {
-            margin-bottom: 1.5rem;
-        }
+  div.dataTables_filter {
+    margin-bottom: 1.5rem;
+  }
 
-        div.dataTables_filter input {
-            margin-left: 0.5rem;
-            padding: 0.4rem 0.6rem;
-            border-radius: 0.375rem;
-        }
+  div.dataTables_filter input {
+    margin-left: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.375rem;
+  }
+
 </style>
 
-   <canvas id="animated-bg"></canvas>
+  <canvas id="animated-bg"></canvas>
+
+  <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['insertar'])) {
+      $usuario = $_POST['usuario'] ?? '';
+      $correo = $_POST['correo'] ?? '';
+      $nivel = $_POST['nivel_usuario'] ?? '';
+      $pass = $_POST['contrasena'] ?? '';
+      $confirm = $_POST['confirmar_contrasena'] ?? '';
+
+      echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+
+      if (!$usuario || !$correo || !$nivel || !$pass || !$confirm) {
+        echo "<script>Swal.fire('Error', 'Todos los campos son obligatorios.', 'error').then(() => history.back());</script>";
+        exit;
+      }
+
+      if ($pass !== $confirm) {
+        echo "<script>Swal.fire('Error', 'Las contraseñas no coinciden.', 'error').then(() => history.back());</script>";
+        exit;
+      }
+
+      $conn = new mysqli("localhost", "root", "", "base_kam");
+      $stmt = $conn->prepare("SELECT usuario FROM usuarios WHERE usuario = ?");
+      $stmt->bind_param("s", $usuario);
+      $stmt->execute();
+      $stmt->store_result();
+
+      if ($stmt->num_rows > 0) {
+        echo "<script>Swal.fire('Error', 'El usuario ya existe.', 'error').then(() => history.back());</script>";
+        exit;
+      }
+
+      $stmt->close();
+      $hash = password_hash($pass, PASSWORD_DEFAULT);
+      $stmt = $conn->prepare("INSERT INTO usuarios (usuario, correo, nivel_usuario, contrasena) VALUES (?, ?, ?, ?)");
+      $stmt->bind_param("ssss", $usuario, $correo, $nivel, $hash);
+
+      if ($stmt->execute()) {
+        echo "<script>Swal.fire('¡Hecho!', 'Usuario registrado correctamente.', 'success').then(() => window.location.href='".$_SERVER['PHP_SELF']."');</script>";
+      } else {
+        echo "<script>Swal.fire('Error', 'No se pudo registrar.', 'error').then(() => history.back());</script>";
+      }
+
+      $stmt->close();
+      $conn->close();
+      exit;
+    }
+?>
+
+
+<!-- Modal de inserción -->
+<div id="modalInsertar" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+    <form method="POST" class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Registrar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="insertar" value="1">
+        <div class="mb-3">
+          <label class="form-label">Usuario</label>
+          <input type="text" name="usuario" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correo" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Rol</label>
+          <select name="nivel_usuario" class="form-select" required>
+            <option value="" disabled selected>Seleccione una opción</option>
+            <option value="administrador">Administrador</option>
+            <option value="Secretaria">Secretaria</option>
+            <option value="RRHH">RRHH</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="contrasena" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Confirmar Contraseña</label>
+          <input type="password" name="confirmar_contrasena" class="form-control" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Registrar</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
   <div class="container-fluid py-3 border-bottom">
     <div class="d-flex align-items-center justify-content-between flex-wrap">
@@ -126,15 +218,70 @@ $correo = $_SESSION['correo'];
         <img src="Assets/Images/KAM.png" alt="Logo" width="160" height="40">
       </div>
       <div class="text-end">
-<button type="button" class="btn btn-outline-primary rounded-circle" title="Agregar Usuario" id="btnAbrirModal">
-  <i class="fas fa-plus"></i>
-</button>
-
+        <button type="button" class="btn btn-outline-primary rounded-circle" title="Agregar Usuario" id="btnAbrirModal">
+          <i class="fas fa-plus"></i>
+        </button>
       </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php
+  if (isset($_GET['eliminar'])) {
+    $id = intval($_GET['eliminar']);
+    $conn = new mysqli("localhost", "root", "", "base_kam");
+    $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
+    $stmt->bind_param("i", $id);
+
+    echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+
+    if ($stmt->execute()) {
+      echo "<script>Swal.fire('¡Eliminado!', 'Usuario eliminado correctamente.', 'success').then(() => window.location.href='".$_SERVER['PHP_SELF']."');</script>";
+    } else {
+      echo "<script>Swal.fire('Error', 'No se pudo eliminar el usuario.', 'error').then(() => window.location.href='".$_SERVER['PHP_SELF']."');</script>";
+    }
+
+    $stmt->close();
+    $conn->close();
+    exit;
+  }
+?>
+
+
+<?php
+// Procesamiento del formulario de edición
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editar'])) {
+  $id = intval($_POST['id']);
+  $usuario = $_POST['usuario'] ?? '';
+  $correo = $_POST['correo'] ?? '';
+  $nivel_usuario = $_POST['nivel_usuario'] ?? '';
+
+  echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+
+  if (!$usuario || !$correo || !$nivel_usuario) {
+    echo "<script>Swal.fire('Error', 'Todos los campos son obligatorios.', 'error').then(() => history.back());</script>";
+    exit;
+  }
+
+  if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+    echo "<script>Swal.fire('Error', 'El correo electrónico no es válido.', 'error').then(() => history.back());</script>";
+    exit;
+  }
+
+  $conn = new mysqli("localhost", "root", "", "base_kam");
+  $stmt = $conn->prepare("UPDATE usuarios SET usuario = ?, correo = ?, nivel_usuario = ? WHERE id = ?");
+  $stmt->bind_param("sssi", $usuario, $correo, $nivel_usuario, $id);
+
+  if ($stmt->execute()) {
+    echo "<script>Swal.fire('¡Hecho!', 'Usuario actualizado correctamente.', 'success').then(() => window.location.href='".$_SERVER['PHP_SELF']."');</script>";
+  } else {
+    echo "<script>Swal.fire('Error', 'No se pudo actualizar el usuario.', 'error').then(() => history.back());</script>";
+  }
+
+  $stmt->close();
+  $conn->close();
+  exit;
+}
+?>
 
 <div class="container my-5">
   <div class="card shadow-sm border-0 rounded-4">
@@ -155,13 +302,98 @@ $correo = $_SESSION['correo'];
             </tr>
           </thead>
           <tbody>
-            <!-- Los datos se cargarán aquí mediante JavaScript -->
+            <?php
+            try {
+              $conn = new PDO("mysql:host=localhost;dbname=base_kam;charset=utf8", "root", "");
+              $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+              $sql = "SELECT id, usuario, correo, nivel_usuario FROM usuarios";
+              $stmt = $conn->prepare($sql);
+              $stmt->execute();
+              $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+              foreach ($usuarios as $user) {
+                echo "<tr>
+                        <td>{$user['id']}</td>
+                        <td>{$user['usuario']}</td>
+                        <td>{$user['correo']}</td>
+                        <td>{$user['nivel_usuario']}</td>
+                        <td>
+                          <a href='?editar_id={$user['id']}' class='btn btn-outline-primary rounded-circle' title='Editar'>
+                            <i class='fas fa-edit'></i>
+                          </a>
+                          <a href='?eliminar={$user['id']}' onclick='return confirmarEliminar(event)' class='btn btn-outline-danger rounded-circle' title='Eliminar'>
+                            <i class='fas fa-trash'></i>
+                          </a>
+                        </td>
+                      </tr>";
+              }
+            } catch (PDOException $e) {
+              echo "<tr><td colspan='5'>Error al cargar usuarios: {$e->getMessage()}</td></tr>";
+            }
+            ?>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
+
+<?php
+// Modal de edición fuera del <tbody>
+if (isset($_GET['editar_id'])) {
+  $id = intval($_GET['editar_id']);
+  $conn = new mysqli("localhost", "root", "", "base_kam");
+  $stmt = $conn->prepare("SELECT usuario, correo, nivel_usuario FROM usuarios WHERE id = ?");
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  $user = $result->fetch_assoc();
+  $stmt->close();
+  $conn->close();
+
+  if ($user) {
+    echo "
+    <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+    <div class='modal fade show' style='display:block; background-color: rgba(0,0,0,0.5);' tabindex='-1'>
+      <div class='modal-dialog'>
+        <form method='POST' class='modal-content'>
+          <div class='modal-header bg-primary text-white'>
+            <h5 class='modal-title'>Editar Usuario</h5>
+            <a href='".$_SERVER['PHP_SELF']."' class='btn-close'></a>
+          </div>
+          <div class='modal-body'>
+            <input type='hidden' name='editar' value='1'>
+            <input type='hidden' name='id' value='{$id}'>
+            <div class='mb-3'>
+              <label class='form-label'>Usuario</label>
+              <input type='text' name='usuario' class='form-control' value='".htmlspecialchars($user['usuario'], ENT_QUOTES)."' required>
+            </div>
+            <div class='mb-3'>
+              <label class='form-label'>Correo</label>
+              <input type='email' name='correo' class='form-control' value='".htmlspecialchars($user['correo'], ENT_QUOTES)."' required>
+            </div>
+            <div class='mb-3'>
+              <label class='form-label'>Rol</label>
+              <select name='nivel_usuario' class='form-select' required>
+                <option value='administrador' ".($user['nivel_usuario'] === 'administrador' ? 'selected' : '').">Administrador</option>
+                <option value='Secretaria' ".($user['nivel_usuario'] === 'Secretaria' ? 'selected' : '').">Secretaria</option>
+                <option value='RRHH' ".($user['nivel_usuario'] === 'RRHH' ? 'selected' : '').">RRHH</option>
+              </select>
+            </div>
+          </div>
+          <div class='modal-footer'>
+            <button type='submit' class='btn btn-primary'>Guardar Cambios</button>
+            <a href='".$_SERVER['PHP_SELF']."' class='btn btn-secondary'>Cancelar</a>
+          </div>
+        </form>
+      </div>
+    </div>
+    ";
+  }
+}
+?>
+
   <!-- Botón de Inicio (derecha) -->
   <a href="Inicio.php">
     <div class="floating-button right-button">
@@ -185,6 +417,13 @@ $correo = $_SESSION['correo'];
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
 <script>
+  document.getElementById('btnAbrirModal').addEventListener('click', () => {
+    const modal = new bootstrap.Modal(document.getElementById('modalInsertar'));
+    modal.show();
+  });
+</script>
+
+<script>
   $(document).ready(function () {
     $('#dataTable').DataTable({
       language: {
@@ -197,337 +436,46 @@ $correo = $_SESSION['correo'];
       responsive: true
     });
   });
-</script>
-
-
-<script>
-
-document.getElementById('btnAbrirModal').onclick = function() {
-  document.getElementById('miModal').style.display = 'block';
-};
-
-document.getElementById('cerrarModal').onclick = function() {
-  document.getElementById('miModal').style.display = 'none';
-};
-
-window.onclick = function(event) {
-  if (event.target == document.getElementById('miModal')) {
-    document.getElementById('miModal').style.display = 'none';
-  }
-};
-
-function mostrarMensaje(mensaje, tipo) {
-    let iconColor = tipo === 'success' ? '#4caf50' : '#f44336'; // Verde para éxito, rojo para error
-    Swal.fire({
-        icon: tipo,
-        title: mensaje,
-        background: 'white',
-        iconColor: iconColor,
-        color: 'black',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        customClass: {
-            popup: 'mensaje-popup'
-        }
-    });
-}
-
-function redireccionarExito() {
-    // Cambia la URL de redirección por la que necesites
-    window.location.href = 'http://localhost/html/Configuracion.php';
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const usuario = form.usuario.value.trim();
-        const correo = form.correo.value.trim();
-        const contrasena = form.contrasena.value.trim();
-        const confirmar_contrasena = form.confirmar_contrasena.value.trim();
-
-        if (!usuario || !correo || !contrasena || !confirmar_contrasena) {
-            mostrarMensaje('Por favor, completa todos los campos.', 'error');
-            return;
-        }
-
-        const contrasenaRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[._*]).{8,}$/;
-        if (!contrasenaRegex.test(contrasena)) {
-            mostrarMensaje('La contraseña debe tener mínimo 8 caracteres, incluyendo una letra mayúscula, un número y un símbolo (., *, _).', 'error');
-            return;
-        }
-
-        const formData = new FormData(form);
-        const response = await fetch(form.action, { method: 'POST', body: formData });
-        const result = await response.json();
-
-        mostrarMensaje(result.message, result.status === 'success' ? 'success' : 'error');
-
-        if (result.status === 'success') {
-            redireccionarExito();
-            limpiarFormulario();
-        }
-    });
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  cargarUsuarios();
-});
-
-// Función para cargar usuarios desde la API
-function cargarUsuarios() {
-  fetch('PHP/API_User.php')
-    .then((response) => {
-      if (!response.ok) throw new Error('Error al obtener los usuarios.');
-      return response.json();
-    })
-    .then((data) => {
-      const userTableBody = document.querySelector('#dataTable tbody');
-      userTableBody.innerHTML = ''; // Limpiar tabla antes de cargar datos
-      data.forEach((user) => {
-        userTableBody.innerHTML += `
-          <tr>
-            <td>${user.id}</td>
-            <td>${user.usuario}</td>
-            <td>${user.correo}</td>
-            <td>${user.nivel_usuario}</td>
-            <td>
-              <a href="javascript:editarUsuario(${user.id})" class="btn btn-outline-primary rounded-circle" title="Editar">
-                <i class="fas fa-edit"></i>
-              </a>
-              <a href="javascript:eliminarUsuario(${user.id})" class="btn btn-outline-danger rounded-circle" title="Eliminar">
-                <i class="fas fa-trash""></i>
-              </a>
-            </td>
-          </tr>`;
-      });
-    })
-    .catch((error) => {
-      console.error(error);
-      Swal.fire('Error', 'No se pudieron cargar los usuarios.', 'error');
-    });
-}
-
-
-  function insertarUsuario() {
-  Swal.fire({
-    title: 'Añadir Usuario',
-    html: `
-      <div class="mb-3 text-start">
-        <label for="usuario" class="form-label">Usuario</label>
-        <input type="text" id="usuario" class="form-control">
-      </div>
-      <div class="mb-3 text-start">
-        <label for="correo" class="form-label">Correo</label>
-        <input type="email" id="correo" class="form-control">
-      </div>
-      <div class="mb-3 text-start">
-        <label for="nivel_usuario" class="form-label">Rol</label>
-        <select id="nivel_usuario" class="form-select">
-          <option value="" disabled selected>Seleccione una opción</option>
-          <option value="administrador">Administrador</option>
-          <option value="Secretaria">Secretaria</option>
-          <option value="RRHH">RRHH</option>
-        </select>
-      </div>
-      <div class="mb-3 text-start">
-        <label for="contrasena" class="form-label">Contraseña</label>
-        <input type="password" id="contrasena" class="form-control">
-      </div>
-      <div class="mb-3 text-start">
-        <label for="confirmar_contrasena" class="form-label">Confirmar Contraseña</label>
-        <input type="password" id="confirmar_contrasena" class="form-control">
-      </div>
-    `,
-    confirmButtonText: 'Registrar',
-    showCancelButton: true,
-    preConfirm: () => {
-      const usuario = document.getElementById('usuario').value.trim();
-      const correo = document.getElementById('correo').value.trim();
-      const nivel_usuario = document.getElementById('nivel_usuario').value;
-      const contrasena = document.getElementById('contrasena').value;
-      const confirmar_contrasena = document.getElementById('confirmar_contrasena').value;
-
-      if (!usuario || !correo || !nivel_usuario || !contrasena || !confirmar_contrasena) {
-        Swal.showValidationMessage('Todos los campos son obligatorios');
-        return null;
-      }
-
-      return { usuario, correo, nivel_usuario, contrasena, confirmar_contrasena };
-    },
-  }).then((result) => {
-    if (result.isConfirmed && result.value) {
-      fetch('registrar.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(result.value),
-      })
-        .then((response) => {
-          if (!response.ok) throw new Error('Error al registrar el usuario.');
-          return response.json();
-        })
-        .then((data) => {
-          if (data.status === 'success') {
-            Swal.fire('¡Hecho!', data.message, 'success');
-            cargarUsuarios(); // recarga la tabla si tienes esta función
-          } else {
-            Swal.fire('Error', data.message, 'error');
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          Swal.fire('Error', 'No se pudo registrar el usuario.', 'error');
-        });
-    }
-  });
-}
-
-
-// Función para editar usuario con rol
-function editarUsuario(id) {
-  fetch(`PHP/API_User.php?id=${id}`)
-    .then((response) => {
-      if (!response.ok) throw new Error('Error al cargar los datos del usuario.');
-      return response.json();
-    })
-    .then((data) => {
-      Swal.fire({
-        title: 'Editar Usuario',
-        html: `
-          <div class="mb-3 text-start">
-            <label for="usuario" class="form-label">Usuario</label>
-            <input type="text" id="usuario" class="form-control" value="${data.usuario}">
-          </div>
-          <div class="mb-3 text-start">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" id="correo" class="form-control" value="${data.correo}">
-          </div>
-          <div class="mb-3 text-start">
-            <label for="nivel_usuario" class="form-label">Rol</label>
-            <select id="nivel_usuario" class="form-select">
-              <option value="administrador" ${data.nivel_usuario === 'administrador' ? 'selected' : ''}>Administrador</option>
-              <option value="Secretaria" ${data.nivel_usuario === 'Secretaria' ? 'selected' : ''}>Secretaria</option>
-              <option value="RRHH" ${data.nivel_usuario === 'RRHH' ? 'selected' : ''}>RRHH</option>
-            </select>
-          </div>
-        `,
-        confirmButtonText: 'Guardar',
-        showCancelButton: true,
-        preConfirm: () => {
-          const usuario = document.getElementById('usuario').value.trim();
-          const correo = document.getElementById('correo').value.trim();
-          const nivel_usuario = document.getElementById('nivel_usuario').value;
-
-          if (!usuario || !correo || !nivel_usuario) {
-            Swal.showValidationMessage('Todos los campos son obligatorios');
-            return null;
-          }
-
-          return { usuario, correo, nivel_usuario };
-        },
-      }).then((result) => {
-        if (result.isConfirmed && result.value) {
-          fetch(`PHP/API_User.php?id=${id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(result.value),
-          })
-            .then((response) => {
-              if (!response.ok) throw new Error('Error al guardar los datos del usuario.');
-              return response.json();
-            })
-            .then(() => {
-              Swal.fire('¡Hecho!', 'Usuario actualizado correctamente.', 'success');
-              cargarUsuarios();
-            })
-            .catch((error) => {
-              console.error(error);
-              Swal.fire('Error', 'No se pudo actualizar el usuario.', 'error');
-            });
-        }
-      });
-    })
-    .catch((error) => {
-      console.error(error);
-      Swal.fire('Error', 'No se pudieron cargar los datos del usuario.', 'error');
-    });
-}
-
-// Función para eliminar usuario
-function eliminarUsuario(id) {
+</script><script>
+function confirmarEliminar(e) {
+  e.preventDefault();
+  const url = e.currentTarget.getAttribute('href');
   Swal.fire({
     title: '¿Estás seguro?',
-    text: "No podrás revertir esta acción.",
+    text: 'No podrás revertir esta acción.',
     icon: 'warning',
     showCancelButton: true,
     confirmButtonText: 'Sí, eliminar',
-    cancelButtonText: 'Cancelar',
+    cancelButtonText: 'Cancelar'
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(`PHP/API_User.php?id=${id}`, {
-        method: 'DELETE',
-      })
-        .then((response) => {
-          if (!response.ok) throw new Error('Error al eliminar el usuario.');
-          return response.json();
-        })
-        .then(() => {
-          Swal.fire('¡Eliminado!', 'El usuario ha sido eliminado.', 'success');
-          cargarUsuarios();
-        })
-        .catch((error) => {
-          console.error(error);
-          Swal.fire('Error', 'No se pudo eliminar el usuario.', 'error');
-        });
+      window.location.href = url;
     }
   });
+  return false;
 }
-
-
-</script>
-  
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <script>
-    // Modal para el perfil de usuario
-    const userProfileButton = document.getElementById('userProfileButton');
-    const userProfileModal = document.getElementById('userProfileModal');
-    const closeProfile = document.getElementById('closeProfile');
-    
-    // Mostrar modal solo cuando se hace clic en el botón (logo)
-    userProfileButton.onclick = function() {
-        userProfileModal.style.display = "block";
-    };
-    
-    // Cerrar modal cuando se hace clic en el botón de cerrar
-    closeProfile.onclick = function() {
-        userProfileModal.style.display = "none";
-    };
-    
-    // Cerrar modal si se hace clic fuera de él
-    window.onclick = function(event) {
-        if (event.target === userProfileModal) {
-            userProfileModal.style.display = "none";
-        }
-    };
 </script>
 
 <script>
-  // Asegura que el botón llama a la función correctamente
-  document.getElementById('btnAbrirModal').addEventListener('click', function () {
-    insertarUsuario();
+function confirmarEliminar(e) {
+  e.preventDefault();
+  const url = e.currentTarget.getAttribute('href');
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'No podrás revertir esta acción.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location.href = url;
+    }
   });
+  return false;
+}
 </script>
+
 
 </body>
 </html>

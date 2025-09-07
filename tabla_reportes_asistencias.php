@@ -169,7 +169,8 @@
 
     <div class="mb-3">
       <label class="form-label icon-label"><i class="fas fa-id-card"></i> Cédula del docente:</label>
-      <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Ej. V12345678" required oninput="validarCedula()" />
+      <input type="text" id="cedula" name="cedula" class="form-control" placeholder="Ej. V-12345678" value="V-" required" />
+
     </div>
 
     <div class="mb-3">
@@ -217,31 +218,61 @@
 <script src="Assets/JavaScript/CanvasPrincipal.js"></script>
 
 <script>
-function validarCedula() {
-  const cedulaInput = document.getElementById("cedula");
-  let cedula = cedulaInput.value.trim();
+const cedulaInput = document.getElementById("cedula");
 
-  if (!cedula.startsWith("V-")) {
-    cedula = "V-" + cedula.replace(/\D/g, "");
-    cedulaInput.value = cedula;
+cedulaInput.addEventListener("input", function () {
+  // Asegura que siempre comience con "V-"
+  if (!this.value.startsWith("V-")) {
+    this.value = "V-" + this.value.replace(/[^0-9]/g, "");
+  } else {
+    const soloNumeros = this.value.slice(2).replace(/[^0-9]/g, "");
+    this.value = "V-" + soloNumeros;
   }
+});
 
-  if (!/^V-\d{7,8}$/.test(cedula)) {
+cedulaInput.addEventListener("keydown", function (e) {
+  // Bloquea retroceso o flecha izquierda si el cursor está en el prefijo
+  if (this.selectionStart <= 2 && (e.key === "Backspace" || e.key === "ArrowLeft")) {
+    e.preventDefault();
+  }
+});
+
+
+document.querySelector("form").addEventListener("submit", function (e) {
+  const cedulaInput = document.getElementById("cedula");
+  const valor = cedulaInput.value.trim();
+  const soloNumeros = valor.slice(2);
+
+  if (!/^V-\d{7,8}$/.test(valor)) {
+    e.preventDefault(); // Detiene el envío
     Swal.fire({
       icon: 'warning',
       title: 'Formato inválido',
       text: 'La cédula debe tener el formato V-12345678',
     });
     cedulaInput.focus();
+    return false;
   }
-}
 
-function toggleFechas() {
-  const tipo = document.getElementById("tipo").value;
-  const fechas = document.getElementById("fechas");
-  fechas.classList.toggle("hidden", tipo !== "general");
-}
+  // Limpieza final
+  cedulaInput.value = "V-" + soloNumeros;
+});
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('sinAsistencia') === '1') {
+    Swal.fire({
+      icon: 'info',
+      title: 'Sin registros',
+      text: 'No se encontraron registros de asistencia para los parámetros seleccionados.',
+      confirmButtonText: 'Entendido'
+    });
+  }
+</script>
+
 
 </body>
 </html>

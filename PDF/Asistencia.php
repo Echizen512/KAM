@@ -138,7 +138,8 @@ try {
         $pdf->Output('D', $fileName); // Fuerza descarga y muestra diálogo "Guardar como"
         exit;
     } else {
-        exit("No se encontraron registros de asistencia.");
+        header("Location: ../tabla_reportes_asistencias.php?sinAsistencia=1");
+        exit;
     }
 } catch (Exception $e) {
     exit("Error en la consulta: " . $e->getMessage());

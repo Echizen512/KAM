@@ -89,6 +89,7 @@ if (!$result) {
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="es">
 <meta charset="UTF-8">
@@ -185,7 +186,7 @@ if (!$result) {
                         </td>
                         <td class="text-center">
                             <div class="btn btn-outline-primary rounded-circle">
-                                <i class="fas fa-edit" onclick="otrosRegistros('<?php echo htmlspecialchars($row['cedula_personal']); ?>')"></i>
+                                <i class="fas fa-eye" onclick="otrosRegistros('<?php echo htmlspecialchars($row['cedula_personal']); ?>')"></i>
                                 <span class="texto-hover">Otros registros</span>
                             </div>
                         </td>
@@ -236,6 +237,66 @@ if (!$result) {
     $('#miTabla_filter').css('margin-bottom', '1rem');
 });
   </script>
+
+<script>
+function otrosRegistros(cedula) {
+  fetch('./PHP/buscar_registros.php?cedula=' + encodeURIComponent(cedula))
+    .then(response => response.json())
+    .then(data => {
+      const contenedor = document.getElementById('otrosRegistrosModalContent');
+      contenedor.innerHTML = '';
+
+      if (data.length === 0 || data.error) {
+        contenedor.innerHTML = '<p class="text-center text-danger">No se encontraron registros.</p>';
+      } else {
+        const tabla = document.createElement('table');
+        tabla.className = 'table table-bordered table-striped text-center mt-3';
+
+        tabla.innerHTML = `
+          <thead class="table-secondary">
+            <tr>
+              <th>Fecha</th>
+              <th>Entrada</th>
+              <th>Salida</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map(registro => `
+              <tr>
+                <td>${registro.fecha_asistencia}</td>
+                <td>${registro.hora_entrada_12h}</td>
+                <td>${registro.hora_salida_12h}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+
+        contenedor.appendChild(tabla);
+      }
+
+      document.getElementById('otrosRegistrosModal').style.display = 'block';
+    })
+    .catch(error => {
+      console.error(error);
+      Swal.fire('Error', 'No se pudieron cargar los registros.', 'error');
+    });
+}
+
+function cerrarModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function filtrarRegistros() {
+  const input = document.getElementById('buscarFecha').value.toLowerCase();
+  const filas = document.querySelectorAll('#otrosRegistrosModalContent tbody tr');
+
+  filas.forEach(fila => {
+    const fecha = fila.children[0].textContent.toLowerCase();
+    fila.style.display = fecha.includes(input) ? '' : 'none';
+  });
+}
+</script>
+
 
     <script src="Assets/JavaScript/CanvasTabla.js"></script>
 

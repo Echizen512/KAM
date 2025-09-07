@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-09-2025 a las 20:17:44
+-- Tiempo de generación: 07-09-2025 a las 20:59:57
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -85,12 +85,12 @@ INSERT INTO `asistencia` (`id_personal`, `cedula_personal`, `fecha_asistencia`, 
 (92, 'V-31500713', '2025-08-22', '21:26:28', '21:36:56', 'manual', '2025-08-23 01:26:30', '2025-08-23 01:36:57', NULL, 'pendiente', NULL),
 (93, 'V-31500713', '2025-08-22', '21:26:35', '21:36:56', 'manual', '2025-08-23 01:26:36', '2025-08-23 01:36:57', NULL, 'pendiente', NULL),
 (94, 'V-17246672', '2025-08-26', '08:02:30', NULL, 'manual', '2025-08-26 12:02:31', '2025-08-26 12:02:31', NULL, 'pendiente', NULL),
-(95, 'V-8815415', '2025-08-27', '17:29:24', NULL, 'manual', '2025-08-27 21:29:27', '2025-08-27 21:29:27', NULL, 'pendiente', NULL),
 (96, 'V-7220772', '2025-09-03', '19:12:30', '19:13:38', 'manual', '2025-09-03 23:12:31', '2025-09-03 23:13:42', NULL, 'pendiente', NULL),
 (97, 'V-4368163', '2025-09-03', '21:40:35', NULL, 'manual', '2025-09-04 01:40:37', '2025-09-04 01:40:37', NULL, 'pendiente', NULL),
 (98, 'V-7151988', '2025-09-03', '21:45:20', NULL, 'manual', '2025-09-04 01:45:21', '2025-09-04 01:45:21', NULL, 'pendiente', NULL),
 (99, 'V-3896345', '2025-09-03', '21:54:26', NULL, 'manual', '2025-09-04 01:54:27', '2025-09-04 01:54:27', NULL, 'pendiente', NULL),
-(100, 'V-8815415', '2025-09-06', '11:37:38', '11:38:46', 'manual', '2025-09-06 15:37:39', '2025-09-06 15:38:47', NULL, 'pendiente', NULL);
+(100, 'V-8815415', '2025-09-06', '11:37:38', '11:38:46', 'manual', '2025-09-06 15:37:39', '2025-09-06 15:38:47', NULL, 'pendiente', NULL),
+(101, 'V-8815415', '2025-09-07', '14:42:51', '14:44:20', 'manual', '2025-09-07 18:42:52', '2025-09-07 18:44:20', NULL, 'pendiente', NULL);
 
 -- --------------------------------------------------------
 
@@ -217,7 +217,19 @@ INSERT INTO `bitacora` (`id`, `usuario_id`, `nombre_usuario`, `correo`, `accion`
 (163, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 12:05:59'),
 (164, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 12:11:11'),
 (165, 31, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-09-06 12:19:20'),
-(166, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 13:07:45');
+(166, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 13:07:45'),
+(167, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 20:43:48'),
+(168, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 21:06:04'),
+(169, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-06 21:08:09'),
+(170, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 08:20:32'),
+(171, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 11:05:43'),
+(172, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 11:05:43'),
+(173, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 11:05:44'),
+(174, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 14:43:09'),
+(175, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 14:43:14'),
+(176, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 14:43:14'),
+(177, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 14:43:14'),
+(178, 25, 'kil', 'karlaad142@gmail.com', 'Inicio de sesión', '2025-09-07 14:44:32');
 
 -- --------------------------------------------------------
 
@@ -263,7 +275,8 @@ INSERT INTO `bloques_parcial` (`id`, `horario_id`, `dia`, `hora`, `nivel`, `secc
 (7, 7, 'Lunes', '7:00 AM - 9:30 AM', '2° año', '2'),
 (8, 8, 'Lunes', '7:00 AM - 9:30 AM', '1° nivel', '1'),
 (9, 9, 'Lunes', '7:00 AM - 9:30 AM', '2° grado', '1'),
-(10, 10, 'Martes', '7:00 AM - 9:30 AM', '1° año', '1');
+(10, 10, 'Martes', '7:00 AM - 9:30 AM', '1° año', '1'),
+(11, 11, 'Lunes', '7:00 AM - 9:30 AM', '1° nivel', '1');
 
 -- --------------------------------------------------------
 
@@ -303,6 +316,13 @@ CREATE TABLE `horarios` (
   `tipo` enum('parcial','tiempo_completo') NOT NULL,
   `total_horas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `horarios`
+--
+
+INSERT INTO `horarios` (`id`, `cedula`, `materia_id`, `tipo`, `total_horas`) VALUES
+(11, 'V-16012813', 1, 'parcial', 2);
 
 -- --------------------------------------------------------
 
@@ -468,7 +488,8 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `usuario`, `nivel_usuario`, `correo`, `contrasena`, `token_recuperacion`, `expiracion_token`) VALUES
 (23, 'Alexandra', 'Secretaria', 'xandrapini@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL),
 (24, 'Marianny', 'RRHH', 'marian@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL),
-(25, 'kil', 'administrador', 'karlaad142@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL);
+(25, 'kil', 'administrador', 'karlaad142@gmail.com', '$2y$10$OJSxUNI3bMaNpJDWJ6KvU./6KFnFkV9xcQsw7TNSxZUl7ysmw9S9K', NULL, NULL),
+(36, 'Admin', 'administrador', 'jmrm19722@gmail.com', '$2y$10$5Lrh.SQmLYJr6N6VkywMi.T.T0MuqWDmfrLCSlYeXQwrXfpvC0Zli', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -574,13 +595,13 @@ ALTER TABLE `usuario_roles`
 -- AUTO_INCREMENT de la tabla `asistencia`
 --
 ALTER TABLE `asistencia`
-  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id_personal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=167;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
 
 --
 -- AUTO_INCREMENT de la tabla `bloques_completo`
@@ -592,13 +613,13 @@ ALTER TABLE `bloques_completo`
 -- AUTO_INCREMENT de la tabla `bloques_parcial`
 --
 ALTER TABLE `bloques_parcial`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `horarios`
 --
 ALTER TABLE `horarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -628,7 +649,7 @@ ALTER TABLE `persona`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- Restricciones para tablas volcadas
