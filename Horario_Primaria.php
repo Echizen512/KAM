@@ -638,7 +638,9 @@ function bloqueCompletoHtml(dia) {
         </select>
       </div>
       <div class="col-md-4">
-        <input type="text" name="seccion_${dia}[]" class="form-control" placeholder="Sección" required>
+          <select name="seccion[]" class="form-control" required>
+            <option value="1">U</option>
+          </select>
       </div>
     </div>
   `;

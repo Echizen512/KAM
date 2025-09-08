@@ -436,7 +436,9 @@ if (isset($_GET['editar_id'])) {
       responsive: true
     });
   });
-</script><script>
+</script>
+
+<script>
 function confirmarEliminar(e) {
   e.preventDefault();
   const url = e.currentTarget.getAttribute('href');

@@ -177,20 +177,9 @@
       <label class="form-label icon-label"><i class="fas fa-filter"></i> Tipo de reporte:</label>
       <select id="tipo" name="tipo" class="form-control" onchange="toggleFechas()" required>
         <option value="diario">Diario</option>
-        <option value="general">General</option>
       </select>
     </div>
 
-    <div id="fechas" class="hidden">
-      <div class="mb-3">
-        <label class="form-label icon-label"><i class="fas fa-calendar-day"></i> Fecha inicio:</label>
-        <input type="date" name="fechaInicio" class="form-control" />
-      </div>
-      <div class="mb-3">
-        <label class="form-label icon-label"><i class="fas fa-calendar-day"></i> Fecha fin:</label>
-        <input type="date" name="fechaFin" class="form-control" />
-      </div>
-    </div>
 
     <div class="d-grid mt-4">
       <button type="submit" class="btn btn-custom">
