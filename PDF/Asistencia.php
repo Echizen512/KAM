@@ -46,6 +46,8 @@ class PDF extends FPDF {
         $this->Cell(0, 10, utf8_decode("Registro $tipoReporte de: $nombre $apellido - Cédula: $cedula"), 0, 1, 'C');
         if ($tipoReporte === 'General' && $fechaInicio && $fechaFin) {
             $this->Cell(0, 10, utf8_decode("Rango de fechas: Desde $fechaInicio Hasta $fechaFin"), 0, 1, 'C');
+        } elseif ($tipoReporte === 'Diario') {
+            $this->Cell(0, 10, utf8_decode("Mostrando todas las asistencias registradas (modo diario extendido)"), 0, 1, 'C');
         }
         $this->Ln(10);
     }
@@ -65,14 +67,11 @@ class PDF extends FPDF {
         $this->SetTextColor(0);
         $this->SetX(30);
 
-        // Formateo de fecha: dd/mm/yyyy
         $fechaFormateada = date("d/m/Y", strtotime($asistencia['fecha_asistencia']));
-
         $this->Cell(80, 10, utf8_decode($fechaFormateada), 1, 0, 'C');
         $this->Cell(80, 10, date("h:i A", strtotime($asistencia['hora_entrada'])), 1, 0, 'C');
         $this->Cell(80, 10, date("h:i A", strtotime($asistencia['hora_salida'])), 1, 1, 'C');
     }
-
 }
 
 // Validación de parámetros
@@ -87,12 +86,12 @@ $params = [];
 $sql = "";
 
 if ($tipo === 'diario') {
-    $fecha = filter_input(INPUT_GET, 'fecha', FILTER_SANITIZE_STRING) ?? date("Y-m-d");
+    // Ajuste solicitado: ignorar fecha y mostrar todo
     $sql = "SELECT p.nombre_personal, p.apellido_personal, p.cedula_personal, a.fecha_asistencia, a.hora_entrada, a.hora_salida 
             FROM persona p 
             INNER JOIN asistencia a ON p.cedula_personal = a.cedula_personal 
-            WHERE p.cedula_personal = ? AND a.fecha_asistencia = ?";
-    $params = [$cedula, $fecha];
+            WHERE p.cedula_personal = ?";
+    $params = [$cedula];
 } elseif ($tipo === 'general') {
     $fechaInicio = filter_input(INPUT_GET, 'fechaInicio', FILTER_SANITIZE_STRING);
     $fechaFin = filter_input(INPUT_GET, 'fechaFin', FILTER_SANITIZE_STRING);
@@ -135,7 +134,7 @@ try {
         }
 
         $fileName = "reporte_{$tipo}_{$cedula}.pdf";
-        $pdf->Output('D', $fileName); // Fuerza descarga y muestra diálogo "Guardar como"
+        $pdf->Output('D', $fileName);
         exit;
     } else {
         header("Location: ../tabla_reportes_asistencias.php?sinAsistencia=1");
