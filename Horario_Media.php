@@ -600,7 +600,6 @@ function filaParcial(opciones) {
           <option value="3° año">3° año</option>
           <option value="4° año">4° año</option>
           <option value="5° año">5° año</option>
-          <option value="6° año">6° año</option>
       </select>
     </td>
     <td class="text-center">
@@ -651,6 +650,33 @@ function bloqueCompletoHtml(dia) {
     </div>
   `;
 }
+function bloqueCompletoHtml(dia) {
+  return `
+    <div class="row g-2 mb-2">
+      <div class="col-md-4">
+        <input type="text" name="bloques_${dia}[]" class="form-control" placeholder="Bloque de hora" required>
+      </div>
+      <div class="col-md-4">
+        <select name="anio_${dia}[]" class="form-select" required>
+          <option value="">Seleccione un año</option>
+          <option value="1° año">1° año</option>
+          <option value="2° año">2° año</option>
+          <option value="3° año">3° año</option>
+          <option value="4° año">4° año</option>
+          <option value="5° año">5° año</option>
+        </select>
+      </div>
+      <div class="col-md-4 text-center">
+        <select name="seccion_${dia}[]" class="form-control" required>
+          <option value="">Seleccione sección</option>
+          <option value="U">U</option>
+        </select>
+      </div>
+    </div>
+  `;
+}
+
+
 
 function agregarBloque(dia) {
   document.getElementById(`bloques_${dia}`).insertAdjacentHTML("beforeend", bloqueCompletoHtml(dia));

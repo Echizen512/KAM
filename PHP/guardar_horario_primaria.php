@@ -62,8 +62,18 @@ if ($tipo === 'parcial') {
   $secciones = $_POST['seccion'] ?? [];
 
   for ($i = 0; $i < count($dias); $i++) {
+    $dia = $dias[$i] ?? null;
+    $hora = $horas[$i] ?? null;
+    $nivel = $niveles[$i] ?? null;
+    $seccion = $secciones[$i] ?? null;
+
+    if ($dia === null || $hora === null || $nivel === null || $seccion === null) {
+      error_log("Bloque parcial incompleto en índice $i: dia=$dia, hora=$hora, nivel=$nivel, seccion=$seccion");
+      continue;
+    }
+
     $stmt = $pdo->prepare("INSERT INTO bloques_parcial (horario_id, dia, hora, nivel, seccion) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$horario_id, $dias[$i], $horas[$i], $niveles[$i], $secciones[$i]]);
+    $stmt->execute([$horario_id, $dia, $hora, $nivel, $seccion]);
   }
 
 } elseif ($tipo === 'tiempo_completo') {
@@ -74,8 +84,17 @@ if ($tipo === 'parcial') {
     $secciones = $_POST["seccion_$dia"] ?? [];
 
     for ($i = 0; $i < count($bloques); $i++) {
+      $bloque = $bloques[$i] ?? null;
+      $nivel = $niveles[$i] ?? null;
+      $seccion = $secciones[$i] ?? null;
+
+      if ($bloque === null || $nivel === null || $seccion === null) {
+        error_log("Bloque completo incompleto en $dia índice $i: bloque=$bloque, nivel=$nivel, seccion=$seccion");
+        continue;
+      }
+
       $stmt = $pdo->prepare("INSERT INTO bloques_completo (horario_id, dia, bloque_hora, nivel, seccion) VALUES (?, ?, ?, ?, ?)");
-      $stmt->execute([$horario_id, $dia, $bloques[$i], $niveles[$i], $secciones[$i]]);
+      $stmt->execute([$horario_id, $dia, $bloque, $nivel, $seccion]);
     }
   }
 }

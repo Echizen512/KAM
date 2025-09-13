@@ -645,13 +645,13 @@ function bloqueCompletoHtml(dia) {
           <option value="1° nivel">1° nivel</option>
           <option value="2° nivel">2° nivel</option>
           <option value="3° nivel">3° nivel</option>
-         
         </select>
       </div>
       <div class="col-md-4">
-          <select name="seccion[]" class="form-control" required>
-            <option value="1">U</option>
-          </select>
+        <select name="seccion_${dia}[]" class="form-select" required>
+          <option value="">Seleccione sección</option>
+          <option value="U">U</option>
+        </select>
       </div>
     </div>
   `;
