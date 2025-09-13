@@ -178,9 +178,9 @@ if (isset($_GET['delete'])) {
                                <button class="btn btn-sm btn-info rounded-circle text-white" data-bs-toggle="modal" data-bs-target="#editModal<?= $row['id'] ?>">
                                 <i class="fas fa-edit"></i>
                                 </button>
-                                <a href="?delete=<?= $row['id'] ?>" class="btn btn-sm btn-danger rounded-circle" onclick="return confirm('¿Eliminar esta materia?')">
-                                <i class="fas fa-trash-alt"></i>
-                                </a>
+                                <button class="btn btn-sm btn-danger rounded-circle btn-delete" data-id="<?= $row['id'] ?>">
+                                  <i class="fas fa-trash-alt"></i>
+                                </button>
                             </td>
                         </tr>
 
@@ -286,6 +286,30 @@ if (isset($_GET['delete'])) {
         });
     });
 </script>
+
+<script>
+  document.querySelectorAll('.btn-delete').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const id = this.getAttribute('data-id');
+
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Esta acción eliminará la materia de forma permanente.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `?delete=${id}`;
+        }
+      });
+    });
+  });
+</script>
+
 
 <?php if (isset($_GET['status']) && $_GET['status'] === 'success'): ?>
 <script>
