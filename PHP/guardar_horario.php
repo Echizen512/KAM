@@ -1,5 +1,5 @@
 <?php
-// Configuración PDO
+// Conexión PDO
 $host = 'localhost';
 $db = 'base_kam';
 $user = 'root';
@@ -20,38 +20,24 @@ try {
 }
 
 // Validación mínima
-if (empty($_POST['cedula']) || empty($_POST['materia']) || empty($_POST['tipo_horario'])) {
+if (empty($_POST['cedula']) || empty($_POST['tipo_horario'])) {
   die("Faltan datos obligatorios.");
 }
 
 $cedula = $_POST['cedula'];
-$materia_id = (int) $_POST['materia'];
-$nuevaMateria = trim($_POST['nueva_materia'] ?? '');
 $tipo = $_POST['tipo_horario'];
 $totalHoras = $_POST['total_horas'] ?? null;
 
-// Verificar si la cédula existe en persona
+// Verificar que la cédula existe en persona
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM persona WHERE cedula_personal = ?");
 $stmt->execute([$cedula]);
 if (!$stmt->fetchColumn()) {
   die("La cédula no está registrada en la tabla persona.");
 }
 
-// Insertar materia si es nueva
-if ($materia_id === 0 && $nuevaMateria !== '') {
-  $stmt = $pdo->prepare("INSERT INTO materias (nombre) VALUES (?)");
-  $stmt->execute([$nuevaMateria]);
-  $materia_id = $pdo->lastInsertId();
-}
-
-// Validar materia existente
-if ($materia_id === 0) {
-  die("La materia no existe.");
-}
-
-// Insertar horario
-$stmt = $pdo->prepare("INSERT INTO horarios (cedula, materia_id, tipo, total_horas) VALUES (?, ?, ?, ?)");
-$stmt->execute([$cedula, $materia_id, $tipo, $totalHoras]);
+// Insertar horario (sin materia_id)
+$stmt = $pdo->prepare("INSERT INTO horarios (cedula, tipo, total_horas) VALUES (?, ?, ?)");
+$stmt->execute([$cedula, $tipo, $totalHoras]);
 $horario_id = $pdo->lastInsertId();
 
 // Insertar bloques
@@ -60,20 +46,18 @@ if ($tipo === 'parcial') {
   $horas = $_POST['hora'] ?? [];
   $niveles = $_POST['anio'] ?? [];
   $secciones = $_POST['seccion'] ?? [];
+  $materias = $_POST['materia_id'] ?? [];
 
   for ($i = 0; $i < count($dias); $i++) {
-    $dia = $dias[$i] ?? null;
-    $hora = $horas[$i] ?? null;
-    $nivel = $niveles[$i] ?? null;
-    $seccion = $secciones[$i] ?? null;
-
-    if ($dia === null || $hora === null || $nivel === null || $seccion === null) {
-      error_log("Bloque parcial incompleto en índice $i: dia=$dia, hora=$hora, nivel=$nivel, seccion=$seccion");
+    if (empty($dias[$i]) || empty($horas[$i]) || empty($niveles[$i]) || empty($secciones[$i]) || empty($materias[$i])) {
       continue;
     }
 
-    $stmt = $pdo->prepare("INSERT INTO bloques_parcial (horario_id, dia, hora, nivel, seccion) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$horario_id, $dia, $hora, $nivel, $seccion]);
+    $stmt = $pdo->prepare("
+      INSERT INTO bloques_parcial (horario_id, dia, hora, nivel, seccion, materia_id)
+      VALUES (?, ?, ?, ?, ?, ?)
+    ");
+    $stmt->execute([$horario_id, $dias[$i], $horas[$i], $niveles[$i], $secciones[$i], $materias[$i]]);
   }
 
 } elseif ($tipo === 'tiempo_completo') {
@@ -82,19 +66,18 @@ if ($tipo === 'parcial') {
     $bloques = $_POST["bloques_$dia"] ?? [];
     $niveles = $_POST["anio_$dia"] ?? [];
     $secciones = $_POST["seccion_$dia"] ?? [];
+    $materias = $_POST["materia_id_$dia"] ?? [];
 
     for ($i = 0; $i < count($bloques); $i++) {
-      $bloque = $bloques[$i] ?? null;
-      $nivel = $niveles[$i] ?? null;
-      $seccion = $secciones[$i] ?? null;
-
-      if ($bloque === null || $nivel === null || $seccion === null) {
-        error_log("Bloque completo incompleto en $dia índice $i: bloque=$bloque, nivel=$nivel, seccion=$seccion");
+      if (empty($bloques[$i]) || empty($niveles[$i]) || empty($secciones[$i]) || empty($materias[$i])) {
         continue;
       }
 
-      $stmt = $pdo->prepare("INSERT INTO bloques_completo (horario_id, dia, bloque_hora, nivel, seccion) VALUES (?, ?, ?, ?, ?)");
-      $stmt->execute([$horario_id, $dia, $bloque, $nivel, $seccion]);
+      $stmt = $pdo->prepare("
+        INSERT INTO bloques_completo (horario_id, dia, bloque_hora, nivel, seccion, materia_id)
+        VALUES (?, ?, ?, ?, ?, ?)
+      ");
+      $stmt->execute([$horario_id, $dia, $bloques[$i], $niveles[$i], $secciones[$i], $materias[$i]]);
     }
   }
 }

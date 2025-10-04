@@ -109,29 +109,18 @@
 
     let cedulaMessageDisplayed = false;
 
-    // Validaciones mientras el usuario escribe
-    document.getElementById("cedula_personal").addEventListener("input", function(event) {
-        const cedula = event.target.value;
-        if (!cedulaMessageDisplayed) {
-            if (!/^[VE]-/.test(cedula) || /[^0-9-]/.test(cedula) || !/^[VE]-\d*$/.test(cedula)) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error en el campo cédula',
-                    text: 'El campo cédula debe tener el formato V-00000000 o E-00000000 y contener solo números.',
-                    confirmButtonText: 'Entendido'
-                });
-                cedulaMessageDisplayed = true;
-            } else if (!/^\d{7,8}$/.test(cedula.split('-')[1])) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error en el campo cédula',
-                    text: 'La cédula debe contener entre 7 y 8 números.',
-                    confirmButtonText: 'Entendido'
-                });
-                cedulaMessageDisplayed = true;
-            }
-        }
-    });
+document.getElementById("cedula_personal").addEventListener("blur", function(event) {
+    const cedula = event.target.value;
+    if (!/^[VE]-\d{7,8}$/.test(cedula)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en el campo cédula',
+            text: 'Debe tener el formato V-00000000 o E-00000000 con 7 u 8 dígitos.',
+            confirmButtonText: 'Entendido'
+        });
+    }
+});
+
 
     document.getElementById("nacionalidad").addEventListener("change", function() {
         const nacionalidad = this.value;
@@ -139,17 +128,18 @@
         cedulaInput.value = `${nacionalidad}-`;
     });
 
-    document.getElementById("nombre_personal").addEventListener("input", function(event) {
-        const nombre = event.target.value;
-        if (!/^[A-Z][a-zA-Z]*$/.test(nombre)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error en el campo nombre',
-                text: 'El nombre debe comenzar con una letra mayúscula y no debe contener números.',
-                confirmButtonText: 'Entendido'
-            });
-        }
-    });
+  document.getElementById("nombre_personal").addEventListener("blur", function(event) {
+    const nombre = event.target.value;
+    if (!/^[A-Z][a-zA-Z]*$/.test(nombre)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en el campo nombre',
+            text: 'El nombre debe comenzar con una letra mayúscula y no debe contener números.',
+            confirmButtonText: 'Entendido'
+        });
+    }
+});
+
 
     document.getElementById("apellido_personal").addEventListener("input", function(event) {
         const apellido = event.target.value;

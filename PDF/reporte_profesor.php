@@ -30,22 +30,40 @@ if ($result->num_rows === 0) {
 $docente = $result->fetch_assoc();
 $stmt->close();
 
-// Consultar horarios
+// Consultar total de horas por tipo
+$stmt = $conn->prepare("SELECT tipo, total_horas FROM horarios WHERE cedula = ?");
+$stmt->bind_param("s", $cedula);
+$stmt->execute();
+$horas = $stmt->get_result();
+$tipos_horario = [];
+while ($row = $horas->fetch_assoc()) {
+    $tipo_legible = ($row['tipo'] === 'tiempo_completo') ? 'Completo' : ucfirst($row['tipo']);
+    $tipos_horario[] = [
+        'tipo' => $tipo_legible,
+        'total_horas' => $row['total_horas']
+    ];
+}
+$stmt->close();
+
+// Consultar todos los bloques (parcial y completo)
 $sql = "
     SELECT 
-        m.nombre AS materia,
         h.tipo,
         COALESCE(bp.dia, bc.dia) AS dia,
         COALESCE(bp.hora, bc.bloque_hora) AS bloque,
+        COALESCE(m.nombre, 'Sin asignar') AS materia,
         COALESCE(bp.nivel, bc.nivel) AS nivel,
         COALESCE(bp.seccion, bc.seccion) AS seccion
     FROM horarios h
-    JOIN materias m ON m.id = h.materia_id
     LEFT JOIN bloques_parcial bp ON bp.horario_id = h.id
     LEFT JOIN bloques_completo bc ON bc.horario_id = h.id
+    LEFT JOIN materias m ON m.id = COALESCE(bp.materia_id, bc.materia_id)
     WHERE h.cedula = ?
-    ORDER BY dia, bloque
+    ORDER BY 
+        FIELD(COALESCE(bp.dia, bc.dia), 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'),
+        bloque
 ";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $cedula);
 $stmt->execute();
@@ -66,6 +84,7 @@ class PDF extends FPDF
         $this->Cell(0, 10, utf8_decode('U.E.P Colegio Edupal'), 0, 1, 'C');
         $this->Cell(0, 10, utf8_decode('La Victoria - Estado Aragua'), 0, 1, 'C');
         $this->Ln(20);
+        $this->SetFont('Arial', 'BU', 14);
         $this->Cell(0, 10, utf8_decode('Horario Académico del Docente'), 0, 1, 'C');
         $this->Ln(10);
     }
@@ -90,25 +109,31 @@ $pdf->Cell(0, 10, utf8_decode("Cédula: {$docente['cedula_personal']}"), 0, 1);
 $pdf->Cell(0, 10, utf8_decode("Cargo: {$docente['cargo_personal']}"), 0, 1);
 $pdf->Ln(5);
 
+$pdf->Ln(5);
+
 // Encabezado de tabla
 $pdf->SetFont('Arial', 'B', 11);
-$pdf->SetFillColor(230, 230, 230);
+$pdf->SetFillColor(220, 220, 220);
+$pdf->Cell(25, 8, utf8_decode('Tipo'), 1, 0, 'C', true);
 $pdf->Cell(25, 8, utf8_decode('Día'), 1, 0, 'C', true);
-$pdf->Cell(40, 8, utf8_decode('Bloque'), 1, 0, 'C', true);
-$pdf->Cell(65, 8, utf8_decode('Materia'), 1, 0, 'C', true);
-$pdf->Cell(35, 8, utf8_decode('Nivel'), 1, 0, 'C', true);
-$pdf->Cell(30, 8, utf8_decode('Sección'), 1, 1, 'C', true);
+$pdf->Cell(35, 8, utf8_decode('Bloque'), 1, 0, 'C', true);
+$pdf->Cell(60, 8, utf8_decode('Materia'), 1, 0, 'C', true);
+$pdf->Cell(25, 8, utf8_decode('Nivel'), 1, 0, 'C', true);
+$pdf->Cell(20, 8, utf8_decode('Sección'), 1, 1, 'C', true);
 
 // Filas de horarios
 $pdf->SetFont('Arial', '', 10);
 while ($row = $horarios->fetch_assoc()) {
+    $tipo_legible = ($row['tipo'] === 'tiempo_completo') ? 'Completo' : ucfirst($row['tipo']);
+    $pdf->Cell(25, 8, utf8_decode($tipo_legible), 1);
     $pdf->Cell(25, 8, utf8_decode($row['dia']), 1);
-    $pdf->Cell(40, 8, utf8_decode($row['bloque']), 1);
-    $pdf->Cell(65, 8, utf8_decode($row['materia']), 1);
-    $pdf->Cell(35, 8, utf8_decode($row['nivel']), 1);
-    $pdf->Cell(30, 8, utf8_decode($row['seccion']), 1);
+    $pdf->Cell(35, 8, utf8_decode($row['bloque']), 1);
+    $pdf->Cell(60, 8, utf8_decode($row['materia']), 1);
+    $pdf->Cell(25, 8, utf8_decode($row['nivel']), 1);
+    $pdf->Cell(20, 8, utf8_decode($row['seccion']), 1);
     $pdf->Ln();
 }
 
-$pdf->Output('I', 'Horario_Profesor.pdf');
+$pdf->Output('D', 'Horario_Profesor.pdf');
+
 ?>
