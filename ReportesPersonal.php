@@ -106,10 +106,9 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'B', 12);
         $this->SetFillColor(35, 120, 182);
         $this->SetTextColor(255, 255, 255);
-        $this->Cell(30, 10, 'Nombre', 1, 0, 'C', true);
-        $this->Cell(30, 10, 'Apellido', 1, 0, 'C', true);
+        $this->Cell(55, 10, 'Nombre', 1, 0, 'C', true);
+        $this->Cell(55, 10, 'Apellido', 1, 0, 'C', true);
         $this->Cell(30, 10,  utf8_decode('Cédula'), 1, 0, 'C', true);
-        $this->Cell(50, 10, 'Correo', 1, 0, 'C', true);
         $this->Cell(45, 10, 'Fecha de Nacimiento', 1, 0, 'C', true);
         $this->Cell(45, 10, 'Fecha de Ingreso', 1, 0, 'C', true);
         $this->Cell(50, 10, 'Cargo', 1, 1, 'C', true);
@@ -124,10 +123,9 @@ class PDF extends FPDF
       $nacimiento = date('d/m/Y', strtotime($persona['nacimiento_personal']));
       $ingreso = date('d/m/Y', strtotime($persona['ingreso_personal']));
 
-      $this->Cell(30, 10, utf8_decode($persona['nombre_personal']), 1, 0, 'C');
-      $this->Cell(30, 10, utf8_decode($persona['apellido_personal']), 1, 0, 'C');
+      $this->Cell(55, 10, utf8_decode($persona['nombre_personal']), 1, 0, 'C');
+      $this->Cell(55, 10, utf8_decode($persona['apellido_personal']), 1, 0, 'C');
       $this->Cell(30, 10, utf8_decode($persona['cedula_personal']), 1, 0, 'C');
-      $this->Cell(50, 10, utf8_decode($persona['correo_personal']), 1, 0, 'C');
       $this->Cell(45, 10, utf8_decode($nacimiento), 1, 0, 'C');
       $this->Cell(45, 10, utf8_decode($ingreso), 1, 0, 'C');
       $this->Cell(50, 10, utf8_decode($persona['cargo_personal']), 1, 1, 'C');
