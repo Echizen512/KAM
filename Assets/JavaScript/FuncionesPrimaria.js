@@ -295,6 +295,7 @@ function filaParcial(opciones) {
         <option value="3° grado">3° grado</option>
         <option value="4° grado">4° grado</option>
         <option value="5° grado">5° grado</option>
+        <option value="6° grado">6° grado</option>
         <option value="Todos">Todos</option>
       </select>
     </td>
@@ -339,6 +340,7 @@ function bloqueCompletoHtml(dia) {
           <option value="3° grado">3° grado</option>
           <option value="4° grado">4° grado</option>
           <option value="5° grado">5° grado</option>
+          <option value="6° grado">6° grado</option>
           <option value="Todos">Todos</option>
         </select>
       </div>
