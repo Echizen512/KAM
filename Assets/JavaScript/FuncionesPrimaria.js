@@ -47,42 +47,77 @@ function editarTipoHorarioChange(select) {
 }
 
 function renderBloquesEditar(tipo, bloques) {
-    const container = document.getElementById("bloquesEditarContainer");
-    container.innerHTML = "";
+  const container = document.getElementById("bloquesEditarContainer");
+  container.innerHTML = "";
 
-    if (tipo === "parcial" || tipo === "tiempo_completo") {
-        let html = `
+  if (tipo === "parcial") {
+    let html = `
       <table class="table table-sm table-bordered align-middle">
         <thead class="table-light">
           <tr>
             <th>Día</th><th>Hora</th><th>Nivel</th><th>Sección</th><th>Materia</th>
           </tr>
         </thead>
-        <tbody id="tbodyEditarParcial">
+        <tbody>
     `;
 
-        bloques.forEach(b => {
-            html += `
+    bloques.forEach(b => {
+      html += `
         <tr>
-          <td><input type="text" name="dia[]" value="${b.dia}" class="form-control"></td>
-          <td><input type="text" name="hora[]" value="${b.hora}" class="form-control"></td>
-          <td><input type="text" name="anio[]" value="${b.nivel}" class="form-control"></td>
-          <td><input type="text" name="seccion[]" value="${b.seccion}" class="form-control"></td>
+          <td><input type="text" name="dia[]" value="${b.dia || ''}" class="form-control"></td>
+          <td><input type="text" name="hora[]" value="${b.hora || b.bloque_hora || ''}" class="form-control"></td>
+          <td><input type="text" name="anio[]" value="${b.nivel || ''}" class="form-control"></td>
+          <td><input type="text" name="seccion[]" value="${b.seccion || ''}" class="form-control"></td>
           <td>
-            <select name="materia_id[]" class="form-select materia-select"></select>
+            <select name="materia_id[]" class="form-select materia-select" data-value="${b.materia_id || ''}"></select>
           </td>
         </tr>
       `;
-        });
+    });
 
-        html += "</tbody></table>";
-        container.innerHTML = html;
+    html += "</tbody></table>";
+    container.innerHTML = html;
 
-    } else {
-        container.innerHTML = `<p class="text-muted">Aquí cargamos los bloques por día...</p>`;
-    }
+  } else if (tipo === "tiempo_completo") {
+    const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+    let html = "";
 
-    cargarMateriasEnSelects();
+    dias.forEach(dia => {
+      const bloquesDia = bloques.filter(b => b.dia === dia);
+
+      html += `
+        <h5 class="mt-3">${dia}</h5>
+        <table class="table table-sm table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Bloque</th><th>Nivel</th><th>Sección</th><th>Materia</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      bloquesDia.forEach(b => {
+        html += `
+          <tr>
+            <td><input type="text" name="bloques_${dia}[]" value="${b.bloque_hora || b.hora || ''}" class="form-control"></td>
+            <td><input type="text" name="anio_${dia}[]" value="${b.nivel || ''}" class="form-control"></td>
+            <td><input type="text" name="seccion_${dia}[]" value="${b.seccion || ''}" class="form-control"></td>
+            <td>
+              <select name="materia_id_${dia}[]" class="form-select materia-select" data-value="${b.materia_id || ''}"></select>
+            </td>
+          </tr>
+        `;
+      });
+
+      html += "</tbody></table>";
+    });
+
+    container.innerHTML = html;
+  } else {
+    container.innerHTML = `<p class="text-muted">Aquí cargamos los bloques por día...</p>`;
+  }
+
+  cargarMateriasEnSelects();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -1,79 +1,102 @@
 <?php
-// Conexión PDO
 $pdo = new PDO("mysql:host=localhost;dbname=base_kam;charset=utf8mb4", "root", "", [
   PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
   PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
 ]);
 
-// Validación básica
 $id = $_POST['id'] ?? null;
 $cedula = $_POST['cedula'] ?? null;
 $tipo = $_POST['tipo_horario'] ?? null;
 $total_horas = $_POST['total_horas'] ?? null;
 
 if (!$id || !$cedula || !$tipo) {
-  die("Faltan datos obligatorios para editar el horario.");
+  die("Faltan datos obligatorios.");
 }
 
-// === Actualizar horario ===
-$stmt = $pdo->prepare("
-  UPDATE horarios
-  SET cedula = ?, tipo = ?, total_horas = ?
-  WHERE id = ?
-");
-$stmt->execute([$cedula, $tipo, $total_horas, $id]);
+$pdo->beginTransaction();
 
-// === Eliminar bloques previos ===
-$stmt = $pdo->prepare("DELETE FROM bloques_parcial WHERE horario_id = ?");
-$stmt->execute([$id]);
+try {
+  $pdo->prepare("UPDATE horarios SET cedula = ?, tipo = ?, total_horas = ? WHERE id = ?")
+      ->execute([$cedula, $tipo, $total_horas, $id]);
 
-$stmt = $pdo->prepare("DELETE FROM bloques_completo WHERE horario_id = ?");
-$stmt->execute([$id]);
+  if ($tipo === 'parcial') {
+    $dias      = $_POST['dia'] ?? [];
+    $horas     = $_POST['hora'] ?? [];
+    $niveles   = $_POST['anio'] ?? [];
+    $secciones = $_POST['seccion'] ?? [];
+    $materias  = $_POST['materia_id'] ?? [];
 
-// === Insertar bloques de nuevo ===
-if ($tipo === 'parcial') {
-  $dias = $_POST['dia'] ?? [];
-  $horas = $_POST['hora'] ?? [];
-  $niveles = $_POST['anio'] ?? [];
-  $secciones = $_POST['seccion'] ?? [];
-  $materias = $_POST['materia_id'] ?? [];
+    $bloquesValidos = array_filter($dias, function ($i) use ($dias, $horas, $niveles, $secciones, $materias) {
+      return isset($dias[$i], $horas[$i], $niveles[$i], $secciones[$i], $materias[$i]) &&
+             $dias[$i] !== '' && $horas[$i] !== '' && $niveles[$i] !== '' &&
+             $secciones[$i] !== '' && $materias[$i] !== '';
+    }, ARRAY_FILTER_USE_KEY);
 
-  for ($i = 0; $i < count($dias); $i++) {
-    if (empty($dias[$i]) || empty($horas[$i]) || empty($niveles[$i]) || empty($secciones[$i]) || empty($materias[$i])) {
-      continue;
+    if (count($bloquesValidos) > 0) {
+      $pdo->prepare("DELETE FROM bloques_parcial WHERE horario_id = ?")->execute([$id]);
     }
 
-    $stmt = $pdo->prepare("
-      INSERT INTO bloques_parcial (horario_id, dia, hora, nivel, seccion, materia_id)
-      VALUES (?, ?, ?, ?, ?, ?)
-    ");
-    $stmt->execute([$id, $dias[$i], $horas[$i], $niveles[$i], $secciones[$i], $materias[$i]]);
-  }
+    foreach ($bloquesValidos as $i => $_) {
+      $pdo->prepare("INSERT INTO bloques_parcial (horario_id, dia, hora, nivel, seccion, materia_id)
+                     VALUES (?, ?, ?, ?, ?, ?)")
+          ->execute([$id, $dias[$i], $horas[$i], $niveles[$i], $secciones[$i], $materias[$i]]);
+    }
 
-} elseif ($tipo === 'tiempo_completo') {
-  $dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+  } elseif ($tipo === 'tiempo_completo') {
+    $diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
+    $bloquesDetectados = false;
 
-  foreach ($dias as $dia) {
-    $bloques = $_POST["bloques_$dia"] ?? [];
-    $niveles = $_POST["anio_$dia"] ?? [];
-    $secciones = $_POST["seccion_$dia"] ?? [];
-    $materias = $_POST["materia_id_$dia"] ?? [];
+    foreach ($diasSemana as $dia) {
+      $bloques   = $_POST["bloques_$dia"] ?? [];
+      $niveles   = $_POST["anio_$dia"] ?? [];
+      $secciones = $_POST["seccion_$dia"] ?? [];
+      $materias  = $_POST["materia_id_$dia"] ?? [];
 
-    for ($i = 0; $i < count($bloques); $i++) {
-      if (empty($bloques[$i]) || empty($niveles[$i]) || empty($secciones[$i]) || empty($materias[$i])) {
-        continue;
+      for ($i = 0; $i < min(count($bloques), count($niveles), count($secciones), count($materias)); $i++) {
+        if (
+          trim($bloques[$i] ?? '') &&
+          trim($niveles[$i] ?? '') &&
+          trim($secciones[$i] ?? '') &&
+          trim($materias[$i] ?? '')
+        ) {
+          $bloquesDetectados = true;
+          break;
+        }
       }
+    }
 
-      $stmt = $pdo->prepare("
-        INSERT INTO bloques_completo (horario_id, dia, bloque_hora, nivel, seccion, materia_id)
-        VALUES (?, ?, ?, ?, ?, ?)
-      ");
-      $stmt->execute([$id, $dia, $bloques[$i], $niveles[$i], $secciones[$i], $materias[$i]]);
+    if ($bloquesDetectados) {
+      $pdo->prepare("DELETE FROM bloques_completo WHERE horario_id = ?")->execute([$id]);
+    }
+
+    foreach ($diasSemana as $dia) {
+      $bloques   = $_POST["bloques_$dia"] ?? [];
+      $niveles   = $_POST["anio_$dia"] ?? [];
+      $secciones = $_POST["seccion_$dia"] ?? [];
+      $materias  = $_POST["materia_id_$dia"] ?? [];
+
+      for ($i = 0; $i < min(count($bloques), count($niveles), count($secciones), count($materias)); $i++) {
+        $bloque   = trim($bloques[$i] ?? '');
+        $nivel    = trim($niveles[$i] ?? '');
+        $seccion  = trim($secciones[$i] ?? '');
+        $materia  = trim($materias[$i] ?? '');
+
+        if ($bloque && $nivel && $seccion && $materia) {
+          $pdo->prepare("INSERT INTO bloques_completo (horario_id, dia, bloque_hora, nivel, seccion, materia_id)
+                         VALUES (?, ?, ?, ?, ?, ?)")
+              ->execute([$id, $dia, $bloque, $nivel, $seccion, $materia]);
+        }
+      }
     }
   }
+
+  $pdo->commit();
+
+} catch (Exception $e) {
+  $pdo->rollBack();
+  die("Error al guardar el horario.");
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">

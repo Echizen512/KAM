@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-10-2025 a las 01:54:35
+-- Tiempo de generación: 16-10-2025 a las 03:46:51
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -70,7 +70,13 @@ INSERT INTO `bitacora` (`id`, `usuario_id`, `nombre_usuario`, `correo`, `accion`
 (7, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-04 14:23:09'),
 (8, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-04 17:58:32'),
 (9, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-04 17:58:32'),
-(10, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-04 17:58:32');
+(10, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-04 17:58:32'),
+(11, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-09 14:33:59'),
+(12, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-09 14:34:00'),
+(13, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-15 18:33:11'),
+(14, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-15 18:39:42'),
+(15, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-15 21:18:19'),
+(16, 36, 'Admin', 'jmrm19722@gmail.com', 'Inicio de sesión', '2025-10-15 21:38:12');
 
 -- --------------------------------------------------------
 
@@ -83,21 +89,10 @@ CREATE TABLE `bloques_completo` (
   `horario_id` int(11) NOT NULL,
   `dia` varchar(20) NOT NULL,
   `bloque_hora` varchar(50) NOT NULL,
-  `nivel` varchar(50) NOT NULL,
-  `seccion` varchar(50) NOT NULL,
+  `nivel` varchar(10) NOT NULL,
+  `seccion` varchar(10) NOT NULL,
   `materia_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `bloques_completo`
---
-
-INSERT INTO `bloques_completo` (`id`, `horario_id`, `dia`, `bloque_hora`, `nivel`, `seccion`, `materia_id`) VALUES
-(1, 2, 'Lunes', '7:00 - 12:00 AM', '1° grado', 'U', 6),
-(2, 2, 'Martes', '7:00 - 12:00 AM', '2° grado', 'U', 7),
-(3, 2, 'Miércoles', '7:00 - 12:00 AM', '4° grado', 'U', 10),
-(4, 2, 'Jueves', '7:00 - 12:00 AM', '3° grado', 'U', 11),
-(5, 2, 'Viernes', '7:00 - 12:00 AM', 'Todos', 'U', 9);
 
 -- --------------------------------------------------------
 
@@ -110,17 +105,10 @@ CREATE TABLE `bloques_parcial` (
   `horario_id` int(11) NOT NULL,
   `dia` varchar(20) NOT NULL,
   `hora` varchar(50) NOT NULL,
-  `nivel` varchar(50) NOT NULL,
-  `seccion` varchar(50) NOT NULL,
+  `nivel` varchar(10) NOT NULL,
+  `seccion` varchar(10) NOT NULL,
   `materia_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `bloques_parcial`
---
-
-INSERT INTO `bloques_parcial` (`id`, `horario_id`, `dia`, `hora`, `nivel`, `seccion`, `materia_id`) VALUES
-(1, 1, 'Lunes', '7:00 AM - 9:30 AM', '2° nivel', 'U', 2);
 
 -- --------------------------------------------------------
 
@@ -166,7 +154,14 @@ CREATE TABLE `horarios` (
 
 INSERT INTO `horarios` (`id`, `cedula`, `tipo`, `total_horas`) VALUES
 (1, 'V-30091390', 'parcial', 2),
-(2, 'V-30091390', 'tiempo_completo', NULL);
+(2, 'V-30091390', 'tiempo_completo', 9),
+(3, 'V-30091390', 'tiempo_completo', 8),
+(4, 'V-30091390', 'tiempo_completo', 9),
+(5, 'V-30091390', 'tiempo_completo', 9),
+(6, 'V-30091390', 'tiempo_completo', 8),
+(7, 'V-30091390', 'tiempo_completo', 18),
+(8, 'V-30091390', 'tiempo_completo', 15),
+(9, 'V-30091390', 'tiempo_completo', 15);
 
 -- --------------------------------------------------------
 
@@ -333,14 +328,16 @@ ALTER TABLE `bitacora`
 --
 ALTER TABLE `bloques_completo`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_completo_materia` (`materia_id`);
+  ADD KEY `horario_id` (`horario_id`),
+  ADD KEY `materia_id` (`materia_id`);
 
 --
 -- Indices de la tabla `bloques_parcial`
 --
 ALTER TABLE `bloques_parcial`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_parcial_materia` (`materia_id`);
+  ADD KEY `horario_id` (`horario_id`),
+  ADD KEY `materia_id` (`materia_id`);
 
 --
 -- Indices de la tabla `cargo`
@@ -412,25 +409,25 @@ ALTER TABLE `asistencia`
 -- AUTO_INCREMENT de la tabla `bitacora`
 --
 ALTER TABLE `bitacora`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `bloques_completo`
 --
 ALTER TABLE `bloques_completo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `bloques_parcial`
 --
 ALTER TABLE `bloques_parcial`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `horarios`
 --
 ALTER TABLE `horarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
@@ -470,13 +467,15 @@ ALTER TABLE `usuarios`
 -- Filtros para la tabla `bloques_completo`
 --
 ALTER TABLE `bloques_completo`
-  ADD CONSTRAINT `fk_completo_materia` FOREIGN KEY (`materia_id`) REFERENCES `materias` (`id`);
+  ADD CONSTRAINT `bloques_completo_ibfk_1` FOREIGN KEY (`horario_id`) REFERENCES `horarios` (`id`),
+  ADD CONSTRAINT `bloques_completo_ibfk_2` FOREIGN KEY (`materia_id`) REFERENCES `materias` (`id`);
 
 --
 -- Filtros para la tabla `bloques_parcial`
 --
 ALTER TABLE `bloques_parcial`
-  ADD CONSTRAINT `fk_parcial_materia` FOREIGN KEY (`materia_id`) REFERENCES `materias` (`id`);
+  ADD CONSTRAINT `bloques_parcial_ibfk_1` FOREIGN KEY (`horario_id`) REFERENCES `horarios` (`id`),
+  ADD CONSTRAINT `bloques_parcial_ibfk_2` FOREIGN KEY (`materia_id`) REFERENCES `materias` (`id`);
 
 --
 -- Filtros para la tabla `usuario_roles`
